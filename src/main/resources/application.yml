@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: economy
+  datasource:
+    url: jdbc:mysql://43.143.47.137:3306/economy?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 1qaz!QAZ
+    driverClassName: com.mysql.cj.jdbc.Driver
+    testWhileIdle: true
+    validationQuery: select 1
+    testOnBorrow: false
+    validationInterval: 1000
+    minIdle: 10
+    maxIdle: 15
+    maxActive: 8
+    initialSize: 8
+    testOnConnect: true
+    initSQL: select 1
+server:
+  port: 1002
+mybatis:
+  #  mapper-locations: classpath:college/springcloud/order/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

@@ -2,6 +2,7 @@ package economy.reverse.repurchase.agreement.datasource;
 
 import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
+import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import org.openqa.selenium.By;
@@ -25,7 +26,7 @@ import java.util.Optional;
  * Version:V1.0
  */
 @Component
-public class BankOfChinaData {
+public class BankOfChinaData implements IExecute {
 
     @Resource
     private ReverseRepurchaseAgreementMapper reverseRepurchaseAgreementMapper;
@@ -37,25 +38,7 @@ public class BankOfChinaData {
     }
 
     private ReverseRepurchaseAgreement getReverseRepurchaseAgreement() {
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-        List<String> list1 = new ArrayList<>();
-        chromeOptions.addArguments(list1);
-        list1.add("--no-sandbox");
-        list1.add("--disable-dev-shm-usage");
-        //# 谷歌文档提到需要加上这个属性来规避bug
-        list1.add("--disable-gpu");
-        //'window-size=1920x3000')  # 指定浏览器分辨率
-        //隐藏滚动条, 应对一些特殊页面
-        list1.add("--hide-scrollbars");
-        // 不加载图片, 提升速度
-        list1.add("blink-settings=imagesEnabled=false");
-        //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
-        list1.add("--headless");
-
-        ChromeDriver driver = new ChromeDriver(chromeOptions);
+        ChromeDriver driver = ChromeUtil.instance();
         driver.get("http://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/index.html");
 //        driver.manage().window().maximize();
         List<WebElement> list = driver.findElements(By.tagName("a"));

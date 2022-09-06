@@ -1,10 +1,9 @@
 package economy.reverse.repurchase.agreement.model;
 
+import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
@@ -12,16 +11,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- *  逆回购
+ * 美元兑人民币
  * </p>
  *
  * @author xuxianbei
- * @since 2022-09-05
+ * @since 2022-09-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("reverse_repurchase_agreement")
-public class ReverseRepurchaseAgreement implements Serializable {
+@TableName("usdcny")
+public class Usdcny implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,29 +31,9 @@ public class ReverseRepurchaseAgreement implements Serializable {
     private Integer id;
 
     /**
-     * 金额
+     * 汇率
      */
-    private BigDecimal price;
-
-    /**
-     * 金额单位
-     */
-    private String priceUnit;
-
-    /**
-     * 周期
-     */
-    private Integer period;
-
-    /**
-     * 周期单位
-     */
-    private String periodUnit;
-
-    /**
-     * 利率
-     */
-    private BigDecimal interestRate;
+    private BigDecimal exchangeRate;
 
     /**
      * 创建时间

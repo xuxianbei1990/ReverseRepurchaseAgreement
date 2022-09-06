@@ -13,15 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
  * Version:V1.0
  */
 @RestController
-@RequestMapping("reverse/repurchase/agreement")
+@RequestMapping("data/collect")
 public class ReverseRepurchaseAgreementController {
 
     @Autowired
     private ReverseRepurchaseAgreementService reverseRepurchaseAgreementService;
 
     @GetMapping("china/of/bank")
-    public String chinaOfBank(){
+    public String chinaOfBank() {
         reverseRepurchaseAgreementService.chinaOfBank();
+        return "success";
+    }
+
+    @GetMapping("usdcny")
+    public String usdcny() {
+        reverseRepurchaseAgreementService.usdcny();
         return "success";
     }
 }
