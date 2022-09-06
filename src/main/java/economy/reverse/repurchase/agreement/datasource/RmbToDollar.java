@@ -1,9 +1,13 @@
 package economy.reverse.repurchase.agreement.datasource;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper;
 import economy.reverse.repurchase.agreement.dao.UsdcnyMapper;
+import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.model.Usdcny;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
+import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -45,6 +49,10 @@ public class RmbToDollar implements IExecute {
 
     @Override
     public void execute() {
-        usdcnyMapper.insert(getRmbToDollar());
+        List<Usdcny> list = usdcnyMapper.selectList(Wrappers.lambdaQuery(Usdcny.class)
+                .between(Usdcny::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
+        if (CollectionUtils.isEmpty(list)) {
+            usdcnyMapper.insert(getRmbToDollar());
+        }
     }
 }

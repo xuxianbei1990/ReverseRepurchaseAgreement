@@ -1,8 +1,11 @@
 package economy.reverse.repurchase.agreement.datasource;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
+import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import org.openqa.selenium.By;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +38,11 @@ public class BankOfChinaData implements IExecute {
 
     public void execute() {
         ReverseRepurchaseAgreement reverseRepurchaseAgreement = getReverseRepurchaseAgreement();
-        reverseRepurchaseAgreementMapper.insert(reverseRepurchaseAgreement);
+        List<ReverseRepurchaseAgreement> list = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
+                .between(ReverseRepurchaseAgreement::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
+        if (CollectionUtils.isEmpty(list)) {
+            reverseRepurchaseAgreementMapper.insert(reverseRepurchaseAgreement);
+        }
     }
 
     private ReverseRepurchaseAgreement getReverseRepurchaseAgreement() {
@@ -62,7 +70,6 @@ public class BankOfChinaData implements IExecute {
                 reverseRepurchaseAgreement.setInterestRate(new BigDecimal(webElement1.getText().replace("%", "")));
             }
         });
-        driver.quit();
         return reverseRepurchaseAgreement;
     }
 
