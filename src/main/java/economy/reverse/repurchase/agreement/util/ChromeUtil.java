@@ -35,7 +35,7 @@ public class ChromeUtil {
         //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
         list1.add("--headless");
         driver = new ChromeDriver(chromeOptions);
-
+        driver.manage().window().minimize();
 //        driver.quit();
     }
 

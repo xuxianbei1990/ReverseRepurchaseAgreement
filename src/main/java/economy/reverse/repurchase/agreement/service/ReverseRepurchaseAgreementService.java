@@ -1,6 +1,7 @@
 package economy.reverse.repurchase.agreement.service;
 
 import economy.reverse.repurchase.agreement.datasource.BankOfChinaData;
+import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
 import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class ReverseRepurchaseAgreementService {
 
 
     @Autowired
+    private PriceEarningsRatioData priceEarningsRatioData;
+
+    @Autowired
     private BankOfChinaData bankOfChinaData;
 
     @Autowired
@@ -29,5 +33,15 @@ public class ReverseRepurchaseAgreementService {
 
     public void usdcny() {
         rmbToDollar.execute();
+    }
+
+    public void economyTarget() {
+        bankOfChinaData.execute();
+        rmbToDollar.execute();
+        priceEarningsRatioData.execute();
+    }
+
+    public void priceEarningsRadio() {
+        priceEarningsRatioData.execute();
     }
 }

@@ -6,20 +6,13 @@ import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +28,7 @@ public class BankOfChinaData implements IExecute {
     @Resource
     private ReverseRepurchaseAgreementMapper reverseRepurchaseAgreementMapper;
 
-
+    @Override
     public void execute() {
         ReverseRepurchaseAgreement reverseRepurchaseAgreement = getReverseRepurchaseAgreement();
         List<ReverseRepurchaseAgreement> list = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)

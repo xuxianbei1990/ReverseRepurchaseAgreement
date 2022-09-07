@@ -30,4 +30,16 @@ public class ReverseRepurchaseAgreementController {
         reverseRepurchaseAgreementService.usdcny();
         return "success";
     }
+
+    @GetMapping("price/earnings/radio")
+    public String priceEarningsRadio() {
+        reverseRepurchaseAgreementService.priceEarningsRadio();
+        return "success";
+    }
+
+    @GetMapping("economy/target")
+    public String economyTarget() {
+        reverseRepurchaseAgreementService.economyTarget();
+        return "success";
+    }
 }
