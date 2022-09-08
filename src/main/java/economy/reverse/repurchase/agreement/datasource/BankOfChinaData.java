@@ -34,6 +34,19 @@ public class BankOfChinaData implements IExecute {
         List<ReverseRepurchaseAgreement> list = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
                 .between(ReverseRepurchaseAgreement::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
         if (CollectionUtils.isEmpty(list)) {
+            ReverseRepurchaseAgreement old = reverseRepurchaseAgreementMapper.selectOne(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
+                    .between(ReverseRepurchaseAgreement::getCreateDate,
+                            TimeThreadSafeUtils.nowMin().plusDays(-reverseRepurchaseAgreement.getPeriod()),
+                            TimeThreadSafeUtils.nowMax().plusDays(-reverseRepurchaseAgreement.getPeriod())));
+            if (old != null) {
+                BigDecimal sub = reverseRepurchaseAgreement.getPrice().subtract(old.getPrice());
+                if (sub.compareTo(BigDecimal.ZERO) < 0){
+                    sub = sub.abs();
+                    reverseRepurchaseAgreement.setSubPrice(sub);
+                } else {
+                    reverseRepurchaseAgreement.setAddPrice(sub);
+                }
+            }
             reverseRepurchaseAgreementMapper.insert(reverseRepurchaseAgreement);
         }
     }

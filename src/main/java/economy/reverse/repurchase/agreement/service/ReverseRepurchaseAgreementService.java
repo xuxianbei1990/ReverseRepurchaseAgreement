@@ -4,6 +4,7 @@ import economy.reverse.repurchase.agreement.datasource.BankOfChinaData;
 import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
 import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
+import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

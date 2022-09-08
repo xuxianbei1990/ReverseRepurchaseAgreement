@@ -42,6 +42,16 @@ public class ReverseRepurchaseAgreement implements Serializable {
     private String priceUnit;
 
     /**
+     * 增加货币
+     */
+    private BigDecimal addPrice;
+
+    /**
+     * 减少货币
+     */
+    private BigDecimal subPrice;
+
+    /**
      * 周期
      */
     private Integer period;
