@@ -1,5 +1,6 @@
 package economy.reverse.repurchase.agreement.schedule;
 
+import economy.reverse.repurchase.agreement.service.ReverseRepurchaseAgreementService;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.checkerframework.checker.initialization.qual.Initialized;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 /**
  * 模拟人
@@ -24,6 +26,8 @@ public class ImitateHuman implements InitializingBean {
     @Autowired
     private AsyncTaskExecutor executor;
 
+    @Autowired
+    private ReverseRepurchaseAgreementService reverseRepurchaseAgreementService;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -31,12 +35,14 @@ public class ImitateHuman implements InitializingBean {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Thread.sleep(1000 * 60);
+                    LocalDateTime now = TimeThreadSafeUtils.now();
+                    if (now.getHour() > 9 && now.getHour() < 10) {
+                        Random random = new Random();
+                        Thread.sleep(random.nextInt(10) * 6000);
+                        reverseRepurchaseAgreementService.economyTarget();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                LocalDateTime now = TimeThreadSafeUtils.now();
-                if (now.getHour() > 9 && now.getHour() < 10) {
-                    System.out.println("10000");
                 }
             }
         });
