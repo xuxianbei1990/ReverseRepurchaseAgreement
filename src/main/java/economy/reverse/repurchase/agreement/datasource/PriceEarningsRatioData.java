@@ -10,6 +10,7 @@ import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -41,7 +42,7 @@ public class PriceEarningsRatioData implements IExecute {
     }
 
     private static PriceEarningsRatio getPriceEarningsRatio() {
-        ChromeDriver driver = ChromeUtil.instance();
+        RemoteWebDriver driver = ChromeUtil.instance();
         driver.get("https://legulegu.com/stockdata/hs300-ttm-lyr");
 //        driver.manage().window().maximize();
         List<WebElement> list = driver.findElements(By.tagName("td"));

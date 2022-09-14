@@ -11,6 +11,7 @@ import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class RmbToDollar implements IExecute {
     private UsdcnyMapper usdcnyMapper;
 
     private static Usdcny getRmbToDollar() {
-        ChromeDriver driver = ChromeUtil.instance();
+        RemoteWebDriver driver = ChromeUtil.instance();
         driver.get(" https://finance.sina.com.cn/money/forex/hq/USDCNY.shtml");
         List<WebElement> list = driver.findElements(By.tagName("li"));
 

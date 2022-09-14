@@ -21,7 +21,7 @@ import java.util.List;
  * Version:V1.0
  */
 public class ChromeUtil {
-    static ChromeDriver driver;
+    static RemoteWebDriver driver;
 
     static {
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -41,7 +41,7 @@ public class ChromeUtil {
         list1.add("--headless");
         if (SystemUtil.getOsInfo().isLinux()) {
             try {
-                driver = (ChromeDriver) new RemoteWebDriver(new URL("http://127.0.0.1:3344"), chromeOptions);
+                driver = new RemoteWebDriver(new URL("http://127.0.0.1:3344"), chromeOptions);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -58,7 +58,7 @@ public class ChromeUtil {
     }
 
 
-    public static ChromeDriver instance() {
+    public static RemoteWebDriver instance() {
         return driver;
     }
 
