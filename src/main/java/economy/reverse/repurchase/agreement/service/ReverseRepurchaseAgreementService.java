@@ -5,6 +5,7 @@ import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
 import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,10 @@ public class ReverseRepurchaseAgreementService {
 
     public void priceEarningsRadio() {
         priceEarningsRatioData.execute();
+    }
+
+    public void sample() {
+        ChromeDriver driver = ChromeUtil.instance();
+        driver.get("https://www.baidu.com/");
     }
 }

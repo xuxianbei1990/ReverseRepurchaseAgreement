@@ -1,10 +1,16 @@
 package economy.reverse.repurchase.agreement.util;
 
+import cn.hutool.system.SystemUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.stereotype.Component;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +24,6 @@ public class ChromeUtil {
     static ChromeDriver driver;
 
     static {
-        WebDriverManager.chromedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
         List<String> list1 = new ArrayList<>();
@@ -34,8 +39,21 @@ public class ChromeUtil {
         list1.add("blink-settings=imagesEnabled=false");
         //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
         list1.add("--headless");
-        driver = new ChromeDriver(chromeOptions);
+        if (SystemUtil.getOsInfo().isLinux()) {
+            try {
+                driver = (ChromeDriver) new RemoteWebDriver(new URL("http://127.0.0.1:3344"), chromeOptions);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            WebDriverManager.chromedriver().setup();
+            ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
+                    .usingDriverExecutable(new File("C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\105.0.5195.52\\chromedriver.exe")).usingAnyFreePort().build();
+            driver = new ChromeDriver(chromeDriverService, chromeOptions);
+        }
         driver.manage().window().minimize();
+        driver.executeScript("window.open('about:blank', 'tab1');");
+        driver.switchTo().window("tab1");
 //        driver.quit();
     }
 
@@ -43,4 +61,5 @@ public class ChromeUtil {
     public static ChromeDriver instance() {
         return driver;
     }
+
 }

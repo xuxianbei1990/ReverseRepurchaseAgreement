@@ -3,6 +3,7 @@ package economy.reverse.repurchase.agreement.schedule;
 import economy.reverse.repurchase.agreement.service.ReverseRepurchaseAgreementService;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.checkerframework.checker.initialization.qual.Initialized;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.AsyncTaskExecutor;
@@ -21,13 +22,15 @@ import java.util.Random;
  * Version:V1.0
  */
 @Component
-public class ImitateHuman implements InitializingBean {
+public class ImitateHuman implements InitializingBean, DisposableBean {
 
     @Autowired
     private AsyncTaskExecutor executor;
 
     @Autowired
     private ReverseRepurchaseAgreementService reverseRepurchaseAgreementService;
+
+    private static Integer executed = 0;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -36,15 +39,25 @@ public class ImitateHuman implements InitializingBean {
                 try {
                     Thread.sleep(1000 * 60);
                     LocalDateTime now = TimeThreadSafeUtils.now();
-                    if (now.getHour() > 9 && now.getHour() < 10) {
-                        Random random = new Random();
-                        Thread.sleep(random.nextInt(10) * 6000);
-                        reverseRepurchaseAgreementService.economyTarget();
+                    if (now.getHour() >= 9 && now.getHour() <= 10) {
+                        if (executed == 0) {
+                            executed++;
+                            Random random = new Random();
+                            Thread.sleep(random.nextInt(10) * 6000 * random.nextInt(6));
+                            reverseRepurchaseAgreementService.economyTarget();
+                        }
+                    } else {
+                        executed = 0;
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    @Override
+    public void destroy() throws Exception {
+
     }
 }

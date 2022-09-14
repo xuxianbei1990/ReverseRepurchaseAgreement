@@ -60,8 +60,7 @@ public class BankOfChinaData implements IExecute {
         WebElement webElement = optionalWebElement.get();
         String url = webElement.getAttribute("href");
 
-        driver.executeScript("window.open('about:blank', 'tab1');");
-        driver.switchTo().window("tab1");
+
         driver.get(url);
         List<WebElement> listP = driver.findElements(By.tagName("p"));
         ReverseRepurchaseAgreement reverseRepurchaseAgreement = new ReverseRepurchaseAgreement();

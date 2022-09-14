@@ -42,4 +42,10 @@ public class ReverseRepurchaseAgreementController {
         reverseRepurchaseAgreementService.economyTarget();
         return "success";
     }
+
+    @GetMapping("sample")
+    public String sample() {
+        reverseRepurchaseAgreementService.sample();
+        return "success";
+    }
 }
