@@ -1,6 +1,7 @@
 package economy.reverse.repurchase.agreement.event;
 
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringCloseEvent implements ApplicationListener<ContextClosedEvent> {
 
+    @Autowired
+    private ChromeUtil chromeUtil;
+
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
-        ChromeUtil.instance().quit();
+        chromeUtil.instance().quit();
     }
 
 }

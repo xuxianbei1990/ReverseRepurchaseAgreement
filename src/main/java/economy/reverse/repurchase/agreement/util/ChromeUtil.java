@@ -2,11 +2,13 @@ package economy.reverse.repurchase.agreement.util;
 
 import cn.hutool.system.SystemUtil;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -20,10 +22,18 @@ import java.util.List;
  * Time: 14:18
  * Version:V1.0
  */
-public class ChromeUtil {
-    static RemoteWebDriver driver;
+@Slf4j
+@Component
+public class ChromeUtil implements InitializingBean {
 
-    static {
+    private RemoteWebDriver driver;
+
+    public RemoteWebDriver instance() {
+        return driver;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
         List<String> list1 = new ArrayList<>();
@@ -41,9 +51,10 @@ public class ChromeUtil {
         list1.add("--headless");
         if (SystemUtil.getOsInfo().isLinux()) {
             try {
-                driver = new RemoteWebDriver(new URL("http://127.0.0.1:3344"), chromeOptions);
+                //因为每个docker都有自己ip，无法直接使用localhost
+                driver = new RemoteWebDriver(new URL("http://43.143.47.137:3344"), chromeOptions);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                log.error("驱动失败",e);
             }
         } else {
             WebDriverManager.chromedriver().setup();
@@ -51,15 +62,9 @@ public class ChromeUtil {
                     .usingDriverExecutable(new File("C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\105.0.5195.52\\chromedriver.exe")).usingAnyFreePort().build();
             driver = new ChromeDriver(chromeDriverService, chromeOptions);
         }
-        driver.manage().window().minimize();
         driver.executeScript("window.open('about:blank', 'tab1');");
         driver.switchTo().window("tab1");
-//        driver.quit();
+        driver.manage().window().minimize();
+        log.info("创建成功");
     }
-
-
-    public static RemoteWebDriver instance() {
-        return driver;
-    }
-
 }

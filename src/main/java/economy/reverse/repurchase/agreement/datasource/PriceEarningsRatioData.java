@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -28,8 +29,13 @@ import java.util.stream.Collectors;
 @Component
 public class PriceEarningsRatioData implements IExecute {
 
+
     @Resource
     private PriceEarningsRatioMapper priceEarningsRatioMapper;
+
+    @Autowired
+    private ChromeUtil chromeUtil;
+
 
     @Override
     public void execute() {
@@ -41,8 +47,8 @@ public class PriceEarningsRatioData implements IExecute {
         }
     }
 
-    private static PriceEarningsRatio getPriceEarningsRatio() {
-        RemoteWebDriver driver = ChromeUtil.instance();
+    private PriceEarningsRatio getPriceEarningsRatio() {
+        RemoteWebDriver driver = chromeUtil.instance();
         driver.get("https://legulegu.com/stockdata/hs300-ttm-lyr");
 //        driver.manage().window().maximize();
         List<WebElement> list = driver.findElements(By.tagName("td"));

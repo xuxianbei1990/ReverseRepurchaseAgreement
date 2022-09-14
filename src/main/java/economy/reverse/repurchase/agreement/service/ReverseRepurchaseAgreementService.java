@@ -29,6 +29,9 @@ public class ReverseRepurchaseAgreementService {
     @Autowired
     private RmbToDollar rmbToDollar;
 
+    @Autowired
+    private ChromeUtil chromeUtil;
+
     public void chinaOfBank() {
         bankOfChinaData.execute();
     }
@@ -49,7 +52,7 @@ public class ReverseRepurchaseAgreementService {
     }
 
     public void sample() {
-        RemoteWebDriver driver = ChromeUtil.instance();
+        RemoteWebDriver driver = chromeUtil.instance();
         driver.get("https://www.baidu.com/");
     }
 }

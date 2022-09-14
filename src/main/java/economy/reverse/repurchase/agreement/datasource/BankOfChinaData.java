@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -28,6 +29,9 @@ public class BankOfChinaData implements IExecute {
 
     @Resource
     private ReverseRepurchaseAgreementMapper reverseRepurchaseAgreementMapper;
+
+    @Autowired
+    private ChromeUtil chromeUtil;
 
     @Override
     public void execute() {
@@ -53,7 +57,7 @@ public class BankOfChinaData implements IExecute {
     }
 
     private ReverseRepurchaseAgreement getReverseRepurchaseAgreement() {
-        RemoteWebDriver driver = ChromeUtil.instance();
+        RemoteWebDriver driver = chromeUtil.instance();
         driver.get("http://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/index.html");
 //        driver.manage().window().maximize();
         List<WebElement> list = driver.findElements(By.tagName("a"));

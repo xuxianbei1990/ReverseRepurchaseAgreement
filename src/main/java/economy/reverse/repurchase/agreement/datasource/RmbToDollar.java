@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -28,19 +30,21 @@ import java.util.stream.Collectors;
 @Component
 public class RmbToDollar implements IExecute {
 
+    @Autowired
+    private ChromeUtil chromeUtil;
 
     @Resource
     private UsdcnyMapper usdcnyMapper;
 
-    private static Usdcny getRmbToDollar() {
-        RemoteWebDriver driver = ChromeUtil.instance();
+    private Usdcny getRmbToDollar() {
+        RemoteWebDriver driver = chromeUtil.instance();
         driver.get(" https://finance.sina.com.cn/money/forex/hq/USDCNY.shtml");
         List<WebElement> list = driver.findElements(By.tagName("li"));
 
         List<String> value = list.stream().map(WebElement::getText).collect(Collectors.toList());
         Usdcny usdcny = new Usdcny();
         for (String s : value) {
-            if (s.startsWith("昨收\n")){
+            if (s.startsWith("昨收\n")) {
                 usdcny.setExchangeRate(new BigDecimal(s.replace("昨收\n", "")));
                 break;
             }
