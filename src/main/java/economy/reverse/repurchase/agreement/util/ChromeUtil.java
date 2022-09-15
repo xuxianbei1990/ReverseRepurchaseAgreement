@@ -32,39 +32,47 @@ public class ChromeUtil implements InitializingBean {
         return driver;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void init() {
         ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-        List<String> list1 = new ArrayList<>();
-        chromeOptions.addArguments(list1);
-        list1.add("--no-sandbox");
-        list1.add("--disable-dev-shm-usage");
-        //# 谷歌文档提到需要加上这个属性来规避bug
-        list1.add("--disable-gpu");
-        //'window-size=1920x3000')  # 指定浏览器分辨率
-        //隐藏滚动条, 应对一些特殊页面
-        list1.add("--hide-scrollbars");
-        // 不加载图片, 提升速度
-        list1.add("blink-settings=imagesEnabled=false");
-        //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
-        list1.add("--headless");
         if (SystemUtil.getOsInfo().isLinux()) {
             try {
                 //因为每个docker都有自己ip，无法直接使用localhost
-                driver = new RemoteWebDriver(new URL("http://43.143.47.137:3344"), chromeOptions);
+                driver = new RemoteWebDriver(new URL("http://43.143.47.137:3344/wd/hub"), chromeOptions);
             } catch (MalformedURLException e) {
-                log.error("驱动失败",e);
+                log.error("驱动失败", e);
             }
         } else {
             WebDriverManager.chromedriver().setup();
+            chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+            List<String> list1 = new ArrayList<>();
+            chromeOptions.addArguments(list1);
+            list1.add("--no-sandbox");
+            list1.add("--disable-dev-shm-usage");
+            //# 谷歌文档提到需要加上这个属性来规避bug
+            list1.add("--disable-gpu");
+            //'window-size=1920x3000')  # 指定浏览器分辨率
+            //隐藏滚动条, 应对一些特殊页面
+            list1.add("--hide-scrollbars");
+            // 不加载图片, 提升速度
+            list1.add("blink-settings=imagesEnabled=false");
+            //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
+            list1.add("--headless");
             ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
                     .usingDriverExecutable(new File("C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\105.0.5195.52\\chromedriver.exe")).usingAnyFreePort().build();
             driver = new ChromeDriver(chromeDriverService, chromeOptions);
+            driver.executeScript("window.open('about:blank', 'tab1');");
+            driver.switchTo().window("tab1");
         }
-        driver.executeScript("window.open('about:blank', 'tab1');");
-        driver.switchTo().window("tab1");
         driver.manage().window().minimize();
         log.info("创建成功");
+    }
+
+    public void unInit() {
+        driver.quit();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
     }
 }

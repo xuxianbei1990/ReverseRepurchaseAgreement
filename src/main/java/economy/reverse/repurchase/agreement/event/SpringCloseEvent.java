@@ -20,7 +20,7 @@ public class SpringCloseEvent implements ApplicationListener<ContextClosedEvent>
 
     @Override
     public void onApplicationEvent(ContextClosedEvent contextClosedEvent) {
-        chromeUtil.instance().quit();
+        chromeUtil.unInit();
     }
 
 }
