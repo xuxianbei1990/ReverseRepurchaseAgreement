@@ -1,5 +1,6 @@
 package economy.reverse.repurchase.agreement.model;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public class Graph {
 
     private List<PriceEarningsRatio> priceEarningsRatios;
-    private List<ReverseRepurchaseAgreement> reverseRepurchaseAgreements;
+    private IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements;
     private List<Usdcny> usdcnies;
+    private List<MediumtermLendingFacility> mediumtermLendingFacilities;
 }

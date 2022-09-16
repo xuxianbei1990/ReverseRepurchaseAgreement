@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="economy.reverse.repurchase.agreement.dao.MediumtermLendingFacilityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="economy.reverse.repurchase.agreement.model.MediumtermLendingFacility">
+        <id column="id" property="id" />
+        <result column="price" property="price" />
+        <result column="sub_price" property="subPrice" />
+        <result column="add_price" property="addPrice" />
+        <result column="price_unit" property="priceUnit" />
+        <result column="period" property="period" />
+        <result column="period_unit" property="periodUnit" />
+        <result column="interest_rate" property="interestRate" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, price, sub_price, add_price, price_unit, period, period_unit, interest_rate, create_date
+    </sql>
+
+</mapper>

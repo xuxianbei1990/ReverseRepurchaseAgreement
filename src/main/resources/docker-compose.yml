@@ -1,8 +1,9 @@
 version: "3"
 services:
+#  --scale web=3 -d
   chrom:
     image: selenium/node-chrome:105.0
-    shm_size: 1gb
+    shm_size: 2gb
     depends_on:
       - selenium-hub
     environment:
@@ -13,6 +14,19 @@ services:
     ports:
     - "6901-6910:5900"
     - "7901-7910:7900"
+  firefox:
+    image: selenium/node-firefox:104.0
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_GRID_URL=http://0.0.0.0:3344
+    ports:
+      - "6801-6810:5900"
+      - "7801-7810:7900"
   selenium-hub:
     image: selenium/hub:4.4.0
     container_name: selenium-hub

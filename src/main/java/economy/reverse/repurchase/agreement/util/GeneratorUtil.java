@@ -24,7 +24,7 @@ public class GeneratorUtil {
 
     public static void main(String[] args) {
         moduleGenerator(new String[]{
-                "price_earnings_ratio"
+                "MediumTerm_Lending_Facility"
         });
     }
 

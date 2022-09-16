@@ -1,22 +1,17 @@
 package economy.reverse.repurchase.agreement.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import economy.reverse.repurchase.agreement.dao.MediumtermLendingFacilityMapper;
 import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
 import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper;
 import economy.reverse.repurchase.agreement.dao.UsdcnyMapper;
-import economy.reverse.repurchase.agreement.datasource.BankOfChinaData;
-import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
-import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
-import economy.reverse.repurchase.agreement.model.Graph;
-import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
-import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
-import economy.reverse.repurchase.agreement.model.Usdcny;
-import org.springframework.beans.factory.annotation.Autowired;
+import economy.reverse.repurchase.agreement.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author: xuxianbei
@@ -36,11 +31,18 @@ public class EconomyShowManagerServcie {
     @Resource
     private UsdcnyMapper usdcnyMapper;
 
+    @Resource
+    private MediumtermLendingFacilityMapper mediumtermLendingFacilityMapper;
+
     public Graph queryGraph() {
+        Page page = new Page<>();
         Graph graph = new Graph();
         List<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectList(Wrappers.lambdaQuery(PriceEarningsRatio.class));
-        List<ReverseRepurchaseAgreement> reverseRepurchaseAgreements = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class));
+        IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements =
+                reverseRepurchaseAgreementMapper.selectPage(page, Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class).orderByDesc(ReverseRepurchaseAgreement::getId));
         List<Usdcny> usdcnies = usdcnyMapper.selectList(Wrappers.lambdaQuery(Usdcny.class));
+        List<MediumtermLendingFacility> mediumtermLendingFacilities = mediumtermLendingFacilityMapper.selectList(Wrappers.lambdaQuery(MediumtermLendingFacility.class));
+        graph.setMediumtermLendingFacilities(mediumtermLendingFacilities);
         graph.setPriceEarningsRatios(priceEarningsRatios);
         graph.setReverseRepurchaseAgreements(reverseRepurchaseAgreements);
         graph.setUsdcnies(usdcnies);
