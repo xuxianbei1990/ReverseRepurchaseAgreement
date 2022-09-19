@@ -43,6 +43,12 @@ public class ReverseRepurchaseAgreementController {
         return "success";
     }
 
+    @GetMapping("parse/save")
+    public String parseSave() {
+        reverseRepurchaseAgreementService.parseSave();
+        return "success";
+    }
+
     @GetMapping("sample")
     public String sample() {
         reverseRepurchaseAgreementService.sample();
