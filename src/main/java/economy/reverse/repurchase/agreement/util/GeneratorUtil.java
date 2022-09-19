@@ -24,7 +24,7 @@ public class GeneratorUtil {
 
     public static void main(String[] args) {
         moduleGenerator(new String[]{
-                "MediumTerm_Lending_Facility"
+                "SH600036"
         });
     }
 
