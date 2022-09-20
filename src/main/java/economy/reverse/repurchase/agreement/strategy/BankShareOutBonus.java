@@ -33,12 +33,18 @@ public class BankShareOutBonus {
     private static List<ShareOutBonus> shareOutBonuses = new ArrayList<>();
 
     private static String[] dates =
+            /**
+             * ICBC
+             * 工商银行
+             */
+            {"2014-06-13", "2015-06-29",  "2016-07-01",  "2017-07-04", "2018-07-06", "2019-06-27", "2020-06-20", "2021-06-29", "2022-07-05" }
+//            {"2015-07-01", "2016-06-30", "2017-06-30", "2018-07-17", "2019-07-10", "2020-07-10", "2021-07-15", "2022-07-08"}
 //    {"2015-07-03", "2016-07-13", "2017-06-14", "2018-07-12", "2019-07-12", "2020-07-10", "2021-07-13", "2022-07-15"}
-    {"2015-07-01", "2016-06-30", "2017-06-30", "2018-07-17", "2019-07-10", "2020-07-10", "2021-07-15", "2022-07-08"}
             ;
 
     private static double[] shares =
-    {3.01, 2.74, 2.78, 2.91, 3.06, 3.2, 3.26, 3.64}
+            {2.617, 2.554, 2.333, 	2.343, 2.408, 2.506, 2.628, 2.66, 2.933}
+//    {3.01, 2.74, 2.78, 2.91, 3.06, 3.2, 3.26, 3.64}
 //    {6.7, 6.90, 7.4, 8.4, 9.4, 12, 12.53, 15.22}
     ;
 
@@ -75,7 +81,7 @@ public class BankShareOutBonus {
         for (Sh600036 sh : newSh) {
             BigDecimal share = sureDate(sh.getCreateDate());
             //分红除以股价
-            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.06)) >= 0) {
+            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.04)) >= 0) {
                 low.add(sh);
                 if (!stacks.isEmpty()) {
                     BigDecimal init1 = stacks.pop();
@@ -138,7 +144,7 @@ public class BankShareOutBonus {
     }
 
     public List<Sh600036> parseData() {
-        return TxtUtils.parseText(new File("E:\\study\\GitHub\\ReverseRepurchaseAgreement\\src\\main\\resources\\static\\SH#601939.txt"));
+        return TxtUtils.parseText(new File("E:\\Java\\GitHub\\ReverseRepurchaseAgreement\\src\\main\\resources\\static\\SH#601398.txt"));
     }
 
 
