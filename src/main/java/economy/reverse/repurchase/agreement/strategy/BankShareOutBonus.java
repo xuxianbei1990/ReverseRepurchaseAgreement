@@ -81,7 +81,7 @@ public class BankShareOutBonus {
         for (Sh600036 sh : newSh) {
             BigDecimal share = sureDate(sh.getCreateDate());
             //分红除以股价
-            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.04)) >= 0) {
+            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.07)) >= 0) {
                 low.add(sh);
                 if (!stacks.isEmpty()) {
                     BigDecimal init1 = stacks.pop();
@@ -92,7 +92,7 @@ public class BankShareOutBonus {
                 }
             }
 
-            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.04)) <= 0) {
+            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 2, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.03)) <= 0) {
                 if (stacks.isEmpty()) {
                     BigDecimal sellCount = sells.stream().reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
                     init = sellCount.multiply(sh.getOpen());
@@ -144,7 +144,7 @@ public class BankShareOutBonus {
     }
 
     public List<Sh600036> parseData() {
-        return TxtUtils.parseText(new File("E:\\Java\\GitHub\\ReverseRepurchaseAgreement\\src\\main\\resources\\static\\SH#601398.txt"));
+        return TxtUtils.parseText(new File(this.getClass().getResource("/").getFile() +"\\static\\SH#601398.txt"));
     }
 
 
