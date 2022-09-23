@@ -45,20 +45,22 @@ public class BankOfChinaData implements IExecute {
         List<ReverseRepurchaseAgreement> list = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
                 .between(ReverseRepurchaseAgreement::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
         if (CollectionUtils.isEmpty(list)) {
-            ReverseRepurchaseAgreement old = reverseRepurchaseAgreementMapper.selectOne(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
-                    .between(ReverseRepurchaseAgreement::getCreateDate,
-                            TimeThreadSafeUtils.nowMin().plusDays(-context.rra.getPeriod()),
-                            TimeThreadSafeUtils.nowMax().plusDays(-context.rra.getPeriod())));
-            if (old != null) {
-                BigDecimal sub = context.rra.getPrice().subtract(old.getPrice());
-                if (sub.compareTo(BigDecimal.ZERO) < 0) {
-                    sub = sub.abs();
-                    context.rra.setSubPrice(sub);
-                } else {
-                    context.rra.setAddPrice(sub);
+            for (ReverseRepurchaseAgreement rra : context.rras) {
+                ReverseRepurchaseAgreement old = reverseRepurchaseAgreementMapper.selectOne(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
+                        .between(ReverseRepurchaseAgreement::getCreateDate,
+                                TimeThreadSafeUtils.nowMin().plusDays(-rra.getPeriod()),
+                                TimeThreadSafeUtils.nowMax().plusDays(-rra.getPeriod())));
+                if (old != null) {
+                    BigDecimal sub = rra.getPrice().subtract(old.getPrice());
+                    if (sub.compareTo(BigDecimal.ZERO) < 0) {
+                        sub = sub.abs();
+                        rra.setSubPrice(sub);
+                    } else {
+                        rra.setAddPrice(sub);
+                    }
                 }
+                reverseRepurchaseAgreementMapper.insert(rra);
             }
-            reverseRepurchaseAgreementMapper.insert(context.rra);
         }
     }
 
@@ -87,7 +89,7 @@ public class BankOfChinaData implements IExecute {
     }
 
     static class Context {
-        ReverseRepurchaseAgreement rra;
+        List<ReverseRepurchaseAgreement> rras = new ArrayList<>();
         MediumtermLendingFacility mlf;
     }
 
@@ -120,16 +122,21 @@ public class BankOfChinaData implements IExecute {
                 mlf.setInterestRate(new BigDecimal(element.getText().replace("%", "")));
             }
         }
-
+        List<ReverseRepurchaseAgreement> rras = new ArrayList<>();
         for (WebElement element : listP) {
             if (element.getText().equals("逆回购操作情况")) {
                 rra = new ReverseRepurchaseAgreement();
+                rras.add(rra);
             }
             if (element.getText().endsWith("天")) {
-                rra.setPeriod(Integer.valueOf(element.findElement(By.tagName("span")).getText()));
+                if (rra.getPeriod() != null && rra.getPeriod() > 0) {
+                    rra = new ReverseRepurchaseAgreement();
+                    rras.add(rra);
+                }
+                rra.setPeriod(Integer.valueOf(element.findElement(By.tagName("span")).getText().replace("天", "")));
             }
             if (element.getText().endsWith("亿元")) {
-                rra.setPrice(new BigDecimal(element.findElement(By.tagName("span")).getText()));
+                rra.setPrice(new BigDecimal(element.findElement(By.tagName("span")).getText().replace("亿元", "")));
             }
             if (element.getText().endsWith("%")) {
                 rra.setInterestRate(new BigDecimal(element.getText().replace("%", "")));
@@ -137,7 +144,7 @@ public class BankOfChinaData implements IExecute {
         }
         Context context = new Context();
         context.mlf = mlf;
-        context.rra = rra;
+        context.rras = rras;
         return context;
     }
 

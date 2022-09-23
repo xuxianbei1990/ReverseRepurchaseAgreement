@@ -11,6 +11,7 @@ import economy.reverse.repurchase.agreement.model.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,11 +39,12 @@ public class EconomyShowManagerServcie {
         Page page = new Page<ReverseRepurchaseAgreement>();
         Page page2 = new Page<PriceEarningsRatio>();
         Graph graph = new Graph();
-        IPage<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectPage(page2, Wrappers.lambdaQuery(PriceEarningsRatio.class));
+        IPage<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectPage(page2, Wrappers.lambdaQuery(PriceEarningsRatio.class).orderByDesc(PriceEarningsRatio::getId));
         IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements =
                 reverseRepurchaseAgreementMapper.selectPage(page, Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class).orderByDesc(ReverseRepurchaseAgreement::getId));
         List<Usdcny> usdcnies = usdcnyMapper.selectList(Wrappers.lambdaQuery(Usdcny.class));
         List<MediumtermLendingFacility> mediumtermLendingFacilities = mediumtermLendingFacilityMapper.selectList(Wrappers.lambdaQuery(MediumtermLendingFacility.class));
+        priceEarningsRatios.getRecords().sort(Comparator.comparing(PriceEarningsRatio::getId));
         graph.setMediumtermLendingFacilities(mediumtermLendingFacilities);
         graph.setPriceEarningsRatios(priceEarningsRatios.getRecords());
         graph.setReverseRepurchaseAgreements(reverseRepurchaseAgreements);
