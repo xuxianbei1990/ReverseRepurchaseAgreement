@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -29,9 +30,9 @@ public class PriceEarningsRatioStategy {
     @Resource
     private Sh600036Mapper sh600036Mapper;
 
-    public Probability execute(BigDecimal max, BigDecimal min) {
+    public Probability execute(BigDecimal max, BigDecimal min, Integer year) {
         List<Sh600036> sh600036s = loadData();
-        return doExecute(sh600036s, 1, max, min);
+        return doExecute(sh600036s, 1, max, min, year);
     }
 
     private List<Sh600036> loadData() {
@@ -45,13 +46,14 @@ public class PriceEarningsRatioStategy {
         }
     }
 
-    private Probability doExecute(List<Sh600036> sh600036s, int times, BigDecimal value, BigDecimal height) {
+    private Probability doExecute(List<Sh600036> sh600036s, int times, BigDecimal value, BigDecimal height, Integer year) {
         BigDecimal init = BigDecimal.valueOf(100000);
         Stack<BigDecimal> stacks = new Stack<>();
         newValue(init, stacks, times);
         List<PriceEarningsRatio> low = new ArrayList<>();
         List<PriceEarningsRatio> height1 = new ArrayList<>();
-        List<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectList(Wrappers.lambdaQuery(PriceEarningsRatio.class));
+        List<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectList(Wrappers.lambdaQuery(PriceEarningsRatio.class)
+                .ge(PriceEarningsRatio::getCreateDate, LocalDateTime.now().plusYears(-year)));
         for (int i = 0; i < priceEarningsRatios.size(); i++) {
             if (priceEarningsRatios.get(i).getRatio().compareTo(value) <= 0) {
                 low.add(priceEarningsRatios.get(i));

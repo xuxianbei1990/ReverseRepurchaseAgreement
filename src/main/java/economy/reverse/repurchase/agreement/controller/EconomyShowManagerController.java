@@ -35,7 +35,7 @@ public class EconomyShowManagerController {
     }
 
     @GetMapping("strategy")
-    public Probability strategy(BigDecimal low, BigDecimal height) {
-        return priceEarningsRatioStategy.execute(low, height);
+    public Probability strategy(BigDecimal low, BigDecimal height, Integer year) {
+        return priceEarningsRatioStategy.execute(low, height, year);
     }
 }
