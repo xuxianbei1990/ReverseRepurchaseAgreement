@@ -3,10 +3,7 @@ package economy.reverse.repurchase.agreement.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import economy.reverse.repurchase.agreement.dao.MediumtermLendingFacilityMapper;
-import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
-import economy.reverse.repurchase.agreement.dao.ReverseRepurchaseAgreementMapper;
-import economy.reverse.repurchase.agreement.dao.UsdcnyMapper;
+import economy.reverse.repurchase.agreement.dao.*;
 import economy.reverse.repurchase.agreement.model.*;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +32,9 @@ public class EconomyShowManagerServcie {
     @Resource
     private MediumtermLendingFacilityMapper mediumtermLendingFacilityMapper;
 
+    @Resource
+    private ProposeMapper proposeMapper;
+
     public Graph queryGraph() {
         Page page = new Page<ReverseRepurchaseAgreement>();
         Page page2 = new Page<PriceEarningsRatio>();
@@ -44,11 +44,13 @@ public class EconomyShowManagerServcie {
                 reverseRepurchaseAgreementMapper.selectPage(page, Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class).orderByDesc(ReverseRepurchaseAgreement::getId));
         List<Usdcny> usdcnies = usdcnyMapper.selectList(Wrappers.lambdaQuery(Usdcny.class));
         List<MediumtermLendingFacility> mediumtermLendingFacilities = mediumtermLendingFacilityMapper.selectList(Wrappers.lambdaQuery(MediumtermLendingFacility.class));
+        List<Propose> proposes = proposeMapper.selectList(Wrappers.lambdaQuery(Propose.class));
         priceEarningsRatios.getRecords().sort(Comparator.comparing(PriceEarningsRatio::getId));
         graph.setMediumtermLendingFacilities(mediumtermLendingFacilities);
         graph.setPriceEarningsRatios(priceEarningsRatios.getRecords());
         graph.setReverseRepurchaseAgreements(reverseRepurchaseAgreements);
         graph.setUsdcnies(usdcnies);
+        graph.setProposes(proposes);
         return graph;
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="economy.reverse.repurchase.agreement.dao.ProposeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="economy.reverse.repurchase.agreement.model.Propose">
+        <id column="id" property="id" />
+        <result column="topic_name" property="topicName" />
+        <result column="remark" property="remark" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, topic_name, remark, create_date
+    </sql>
+
+</mapper>

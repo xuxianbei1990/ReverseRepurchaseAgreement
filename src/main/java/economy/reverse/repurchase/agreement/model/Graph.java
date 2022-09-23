@@ -18,4 +18,5 @@ public class Graph {
     private IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements;
     private List<Usdcny> usdcnies;
     private List<MediumtermLendingFacility> mediumtermLendingFacilities;
+    private List<Propose> proposes;
 }
