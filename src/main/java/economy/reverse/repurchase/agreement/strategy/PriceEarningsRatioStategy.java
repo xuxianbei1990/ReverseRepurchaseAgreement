@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
 import economy.reverse.repurchase.agreement.dao.Sh600036Mapper;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
+import economy.reverse.repurchase.agreement.model.Probability;
 import economy.reverse.repurchase.agreement.model.Sh600036;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +29,9 @@ public class PriceEarningsRatioStategy {
     @Resource
     private Sh600036Mapper sh600036Mapper;
 
-    public void execute(BigDecimal max, BigDecimal min) {
+    public Probability execute(BigDecimal max, BigDecimal min) {
         List<Sh600036> sh600036s = loadData();
-        doExecute(sh600036s, 1, max, min);
-
+        return doExecute(sh600036s, 1, max, min);
     }
 
     private List<Sh600036> loadData() {
@@ -45,7 +45,7 @@ public class PriceEarningsRatioStategy {
         }
     }
 
-    private void doExecute(List<Sh600036> sh600036s, int times, BigDecimal value, BigDecimal height) {
+    private Probability doExecute(List<Sh600036> sh600036s, int times, BigDecimal value, BigDecimal height) {
         BigDecimal init = BigDecimal.valueOf(100000);
         Stack<BigDecimal> stacks = new Stack<>();
         newValue(init, stacks, times);
@@ -53,7 +53,6 @@ public class PriceEarningsRatioStategy {
         List<PriceEarningsRatio> height1 = new ArrayList<>();
         List<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectList(Wrappers.lambdaQuery(PriceEarningsRatio.class));
         for (int i = 0; i < priceEarningsRatios.size(); i++) {
-            //分红除以股价
             if (priceEarningsRatios.get(i).getRatio().compareTo(value) <= 0) {
                 low.add(priceEarningsRatios.get(i));
 
@@ -63,8 +62,9 @@ public class PriceEarningsRatioStategy {
                 height1.add(priceEarningsRatios.get(i));
             }
         }
-
-        System.out.println("概率" + BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(priceEarningsRatios.size()), 5, BigDecimal.ROUND_HALF_UP));
-        System.out.println("概率" + BigDecimal.valueOf(height1.size()).divide(BigDecimal.valueOf(priceEarningsRatios.size()), 5, BigDecimal.ROUND_HALF_UP));
+        Probability probability = new Probability();
+        probability.setLow("概率->" + BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(priceEarningsRatios.size()), 5, BigDecimal.ROUND_HALF_UP));
+        probability.setHeight("概率->" + BigDecimal.valueOf(height1.size()).divide(BigDecimal.valueOf(priceEarningsRatios.size()), 5, BigDecimal.ROUND_HALF_UP));
+        return probability;
     }
 }

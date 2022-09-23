@@ -1,6 +1,7 @@
 package economy.reverse.repurchase.agreement.controller;
 
 import economy.reverse.repurchase.agreement.model.Graph;
+import economy.reverse.repurchase.agreement.model.Probability;
 import economy.reverse.repurchase.agreement.service.EconomyShowManagerServcie;
 import economy.reverse.repurchase.agreement.strategy.PriceEarningsRatioStategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,7 @@ public class EconomyShowManagerController {
     }
 
     @GetMapping("strategy")
-    public String strategy(BigDecimal low, BigDecimal height) {
-        priceEarningsRatioStategy.execute(low, height);
-        return "success";
+    public Probability strategy(BigDecimal low, BigDecimal height) {
+        return priceEarningsRatioStategy.execute(low, height);
     }
 }
