@@ -77,7 +77,7 @@ public class ReverseRepurchaseAgreementService {
 
     @Transactional(rollbackFor = Exception.class)
     public void parseSave() {
-        MyExcelUtil.parse("", (priceEarningsRatio) -> priceEarningsRatioMapper.insert(priceEarningsRatio));
+        MyExcelUtil.parse("沪深300市盈率.xlsx", (priceEarningsRatio) -> priceEarningsRatioMapper.insert(priceEarningsRatio));
 //        List<Sh600036> sh600036s = bankShareOutBonus.parseData();
 //        sh600036s.forEach(sh600036 -> sh600036Mapper.insert(sh600036));
     }

@@ -5,6 +5,7 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.sax.handler.RowHandler;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
+import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ import java.util.function.Consumer;
  */
 public class MyExcelUtil {
 
-    public static void parse(String filePath, Consumer<PriceEarningsRatio> consumer) {
-        ExcelUtil.readBySax(MyExcelUtil.class.getResource("/").getFile() + "\\static\\沪深300市盈率.xlsx",
+    public static void parse(String fileName, Consumer<PriceEarningsRatio> consumer) {
+        ExcelUtil.readBySax(MyExcelUtil.class.getResource("/").getFile() + "\\static\\" + fileName,
                 0, (sheetIndex, rowIndex, rowCells) -> {
                     if (rowIndex > 1) {
                         PriceEarningsRatio ratio = new PriceEarningsRatio();
@@ -30,5 +31,19 @@ public class MyExcelUtil {
                         consumer.accept(ratio);
                     }
                 });
+    }
+
+    public static List<DateOneBigDecimal> parseGeLeiEMu() {
+        List<DateOneBigDecimal> list = new ArrayList<>();
+        ExcelUtil.readBySax(MyExcelUtil.class.getResource("/").getFile() + "\\static\\格雷厄姆指数-data-2022-09-27.xlsx",
+                0, (sheetIndex, rowIndex, rowCells) -> {
+                    if (rowIndex > 1) {
+                        DateOneBigDecimal ratio = new DateOneBigDecimal();
+                        ratio.setDate(LocalDateTimeUtil.of(DateUtil.parse(rowCells.get(0).toString())));
+                        ratio.setRate(new BigDecimal(rowCells.get(1).toString()));
+                        list.add(ratio);
+                    }
+                });
+        return list;
     }
 }
