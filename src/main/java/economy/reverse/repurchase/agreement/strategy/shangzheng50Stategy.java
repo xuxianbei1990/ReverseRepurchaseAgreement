@@ -24,7 +24,7 @@ public class shangzheng50Stategy extends AbstractExecuteTemplate {
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
         List<DateOneBigDecimal> low = new ArrayList<>();
         for (DateOneBigDecimal dateOneBigDecimal : dateOneBigDecimals) {
-            if (dateOneBigDecimal.getRate().compareTo(BigDecimal.valueOf(4.5)) > 0) {
+            if (dateOneBigDecimal.getRate().compareTo(BigDecimal.valueOf(3.9153)) > 0) {
                 low.add(dateOneBigDecimal);
             }
         }
