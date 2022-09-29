@@ -24,7 +24,7 @@ public class GeneratorUtil {
 
     public static void main(String[] args) {
         moduleGenerator(new String[]{
-                "propose"
+                "fund110003"
         });
     }
 

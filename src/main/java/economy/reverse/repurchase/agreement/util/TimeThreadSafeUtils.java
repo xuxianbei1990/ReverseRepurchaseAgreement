@@ -1,5 +1,8 @@
 package economy.reverse.repurchase.agreement.util;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,10 +42,11 @@ public class TimeThreadSafeUtils {
 
     /**
      * 当前时间
+     *
      * @return
      */
     public static LocalDateTime now() {
-       return LocalDateTime.now();
+        return LocalDateTime.now();
     }
 
     /**
@@ -67,6 +71,7 @@ public class TimeThreadSafeUtils {
 
     /**
      * 两个时间差
+     *
      * @param dateA
      * @param dateB
      * @return
@@ -91,6 +96,10 @@ public class TimeThreadSafeUtils {
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = localDateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());
+    }
+
+    public static LocalDateTime stringToLocalDateTime(String value) {
+        return LocalDateTimeUtil.of(DateUtil.parse(value));
     }
 
 }
