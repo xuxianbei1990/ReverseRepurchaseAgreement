@@ -30,7 +30,7 @@ public class shangzheng50Stategy extends AbstractExecuteTemplate {
         List<DateOneBigDecimal> height = new ArrayList<>();
         BigDecimal init = BigDecimal.valueOf(100000);
         MySql mySql = new MySql();
-        List<Fund110003> list = mySql.executeSelect();
+        List<Fund110003> list = mySql.executeSelect("161613");
         BigDecimal count = BigDecimal.ZERO;
         for (int i = 0; i < dateOneBigDecimals.size(); i++) {
             if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(3.6)) > 0) {
