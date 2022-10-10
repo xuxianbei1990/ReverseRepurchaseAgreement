@@ -3,7 +3,12 @@ package economy.reverse.repurchase.agreement.util;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
 import economy.reverse.repurchase.agreement.model.Sh600036;
+import netscape.javascript.JSObject;
 import org.apache.ibatis.io.Resources;
 import org.springframework.core.io.ClassPathResource;
 
@@ -23,6 +28,24 @@ import java.util.stream.Collectors;
  * @description
  */
 public class TxtUtils {
+
+    public static void main(String[] args) {
+        parseJsonToPer("");
+    }
+
+    public static List<PriceEarningsRatio> parseJsonToPer(String filePath) {
+        String json = FileUtil.readString(TxtUtils.class.getResource("/").getFile() + "\\static\\创业50.txt", Charset.forName("gb2312"));
+        JSONObject jsonArray = JSONUtil.parseObj(json);
+        List<JSONObject> jsonObjects =  jsonArray.getBeanList("data", JSONObject.class);
+        List<PriceEarningsRatio> list = jsonObjects.stream().map(value -> {
+            PriceEarningsRatio ratio = new PriceEarningsRatio();
+            ratio.setCreateDate(LocalDateTimeUtil.of(value.getLong("date")));
+            ratio.setRadioName("创业50滚动市盈率(TTM)中位数");
+            ratio.setRatio(value.getBigDecimal("middleTtmPe"));
+            return ratio;
+        }).collect(Collectors.toList());
+        return list;
+    }
 
     public static List<Sh600036> parseText(File fie) {
         List<String> list = FileUtil.readLines(fie, Charset.forName("gb2312"));

@@ -25,7 +25,6 @@ public class shangzheng50Stategy extends AbstractExecuteTemplate {
 
     @Override
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
-        //如果出现这个信号，就买入，那么历史上表现情况如何？
         List<DateOneBigDecimal> low = new ArrayList<>();
         List<DateOneBigDecimal> height = new ArrayList<>();
         BigDecimal init = BigDecimal.valueOf(100000);

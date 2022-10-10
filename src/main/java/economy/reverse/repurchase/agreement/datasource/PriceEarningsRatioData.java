@@ -1,5 +1,6 @@
 package economy.reverse.repurchase.agreement.datasource;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,5 +64,10 @@ public class PriceEarningsRatioData implements IExecute {
             }
         }
         return priceEarningsRatio;
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(LocalDateTimeUtil.of(1257264000000L));
     }
 }
