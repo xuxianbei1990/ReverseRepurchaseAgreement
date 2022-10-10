@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 格雷厄姆指数
  * @author: xuxianbei
  * Date: 2022/9/27
  * Time: 11:37
  * Version:V1.0
  */
-public class shangzheng50Stategy extends AbstractExecuteTemplate {
+public class Shangzheng50Stategy extends AbstractExecuteTemplate {
 
     @Override
     public List<DateOneBigDecimal> parseData() {
@@ -73,6 +74,6 @@ public class shangzheng50Stategy extends AbstractExecuteTemplate {
     }
 
     public static void main(String[] args) {
-        new shangzheng50Stategy().execute();
+        new Shangzheng50Stategy().execute();
     }
 }
