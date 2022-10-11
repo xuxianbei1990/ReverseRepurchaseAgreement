@@ -33,6 +33,21 @@ public class TxtUtils {
         parseJsonToPer("");
     }
 
+    public static List<PriceEarningsRatio> parseBftJsonToPer(String filePath) {
+        String json = FileUtil.readString(TxtUtils.class.getResource("/").getFile() + "\\static\\巴菲特指数.txt", Charset.forName("gb2312"));
+        JSONObject jsonArray = JSONUtil.parseObj(json);
+        List<JSONObject> jsonObjects =  jsonArray.getBeanList("data", JSONObject.class);
+        List<PriceEarningsRatio> list = jsonObjects.stream().map(value -> {
+            PriceEarningsRatio ratio = new PriceEarningsRatio();
+            ratio.setCreateDate(LocalDateTimeUtil.of(value.getLong("date")));
+            ratio.setRadioName("总市值比GDP");
+            ratio.setRatio(value.getBigDecimal("marketCap").divide(value.getBigDecimal("gdp"), 4, BigDecimal.ROUND_HALF_UP));
+            return ratio;
+        }).collect(Collectors.toList());
+        return list;
+    }
+
+
     public static List<PriceEarningsRatio> parseJsonToPer(String filePath) {
         String json = FileUtil.readString(TxtUtils.class.getResource("/").getFile() + "\\static\\创业50.txt", Charset.forName("gb2312"));
         JSONObject jsonArray = JSONUtil.parseObj(json);
