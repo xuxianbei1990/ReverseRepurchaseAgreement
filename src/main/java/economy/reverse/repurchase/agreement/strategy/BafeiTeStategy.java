@@ -22,7 +22,7 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
     public List<DateOneBigDecimal> parseData() {
         List<PriceEarningsRatio> list = TxtUtils.parseBftJsonToPer("");
 
-        return list.stream().filter(t -> t.getCreateDate().compareTo(LocalDateTime.of(2015, 4, 4, 0, 0, 0)) > 0).map(priceEarningsRatio -> {
+        return list.stream().filter(t -> t.getCreateDate().compareTo(LocalDateTime.of(2017, 4, 4, 0, 0, 0)) > 0).map(priceEarningsRatio -> {
             DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
             oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
             oneBigDecimal.setRate(priceEarningsRatio.getRatio());
