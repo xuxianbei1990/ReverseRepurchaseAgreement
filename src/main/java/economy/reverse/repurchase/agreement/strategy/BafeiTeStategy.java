@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 巴菲特指数
  * @author: xuxianbei
  * Date: 2022/10/11
  * Time: 14:06
@@ -35,7 +36,7 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
         List<DateOneBigDecimal> low = new ArrayList<>();
         List<DateOneBigDecimal> height = new ArrayList<>();
         for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(0.72)) < 0) {
+            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(0.6)) < 0) {
                 low.add(dateOneBigDecimals.get(i));
 //                if (init.compareTo(BigDecimal.ZERO) > 0) {
 //                    Fund110003 fund110003 = list.get(i);
