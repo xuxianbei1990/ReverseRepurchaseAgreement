@@ -3,6 +3,7 @@ package economy.reverse.repurchase.agreement.service;
 import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
 import economy.reverse.repurchase.agreement.dao.Sh600036Mapper;
 import economy.reverse.repurchase.agreement.datasource.BankOfChinaData;
+import economy.reverse.repurchase.agreement.datasource.IExecute;
 import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
 import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
@@ -34,6 +35,9 @@ public class ReverseRepurchaseAgreementService {
     private PriceEarningsRatioData priceEarningsRatioData;
 
     @Autowired
+    private List<IExecute> executes;
+
+    @Autowired
     private BankOfChinaData bankOfChinaData;
 
     @Autowired
@@ -41,12 +45,6 @@ public class ReverseRepurchaseAgreementService {
 
     @Autowired
     private ChromeUtil chromeUtil;
-
-    @Autowired
-    private BankShareOutBonus bankShareOutBonus;
-
-    @Resource
-    private Sh600036Mapper sh600036Mapper;
 
     @Resource
     private PriceEarningsRatioMapper priceEarningsRatioMapper;
@@ -61,9 +59,9 @@ public class ReverseRepurchaseAgreementService {
     }
 
     public void economyTarget() {
-        bankOfChinaData.execute();
-        rmbToDollar.execute();
-        priceEarningsRatioData.execute();
+        for (IExecute execute : executes) {
+            execute.execute();
+        }
     }
 
     public void priceEarningsRadio() {

@@ -5,18 +5,23 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import economy.reverse.repurchase.agreement.model.Fund110003;
+import economy.reverse.repurchase.agreement.model.GrahamIndex;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.MyExcelUtil;
 import economy.reverse.repurchase.agreement.util.mysql.MySql;
+import economy.reverse.repurchase.agreement.util.mysql.MySqlGraham;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 格雷厄姆指数
@@ -38,36 +43,45 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
 
     @Override
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
-        List<DateOneBigDecimal> low = new ArrayList<>();
-        List<DateOneBigDecimal> height = new ArrayList<>();
-        BigDecimal init = BigDecimal.valueOf(100000);
-        MySql mySql = new MySql();
-        List<Fund110003> list = mySql.executeSelect("161613");
-        BigDecimal count = BigDecimal.ZERO;
-        for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(3.6)) > 0) {
-                low.add(dateOneBigDecimals.get(i));
-                if (init.compareTo(BigDecimal.ZERO) > 0) {
-                    Fund110003 fund110003 = list.get(i);
-                    count = init.divide(fund110003.getUnit(), 0, BigDecimal.ROUND_HALF_UP);
-                    System.out.println("买入" + count + "股价：" + fund110003);
-                    init = BigDecimal.ZERO;
-                }
-            }
-            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(2)) < 0) {
-                height.add(dateOneBigDecimals.get(i));
-                if (init.compareTo(BigDecimal.ZERO) == 0) {
-                    Fund110003 fund110003 = list.get(i);
-                    init = count.multiply(fund110003.getUnit());
-                    System.out.println("卖出" + init + "股价：" + fund110003);
-                    count = BigDecimal.ZERO;
-                }
 
-            }
-        }
-        System.out.println(init.subtract(BigDecimal.valueOf(100000)).divide(BigDecimal.valueOf(100000).multiply(BigDecimal.valueOf(10)), 2, RoundingMode.UP));
-        System.out.println(BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
-        System.out.println(BigDecimal.valueOf(height.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
+        MySqlGraham mySqlGraham = new MySqlGraham();
+        mySqlGraham.executeCreateAndUpdate(dateOneBigDecimals.stream().map(dateOneBigDecimal -> {
+            GrahamIndex grahamIndex =new GrahamIndex();
+            grahamIndex.setCreateDate(dateOneBigDecimal.getDate());
+            grahamIndex.setRatio(dateOneBigDecimal.getRate());
+            return grahamIndex;
+        }).sorted(Comparator.comparing(GrahamIndex::getCreateDate)).collect(Collectors.toList()));
+
+//        List<DateOneBigDecimal> low = new ArrayList<>();
+//        List<DateOneBigDecimal> height = new ArrayList<>();
+//        BigDecimal init = BigDecimal.valueOf(100000);
+//        MySql mySql = new MySql();
+//        List<Fund110003> list = mySql.executeSelect("161613");
+//        BigDecimal count = BigDecimal.ZERO;
+//        for (int i = 0; i < dateOneBigDecimals.size(); i++) {
+//            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(3.6)) > 0) {
+//                low.add(dateOneBigDecimals.get(i));
+//                if (init.compareTo(BigDecimal.ZERO) > 0) {
+//                    Fund110003 fund110003 = list.get(i);
+//                    count = init.divide(fund110003.getUnit(), 0, BigDecimal.ROUND_HALF_UP);
+//                    System.out.println("买入" + count + "股价：" + fund110003);
+//                    init = BigDecimal.ZERO;
+//                }
+//            }
+//            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(2)) < 0) {
+//                height.add(dateOneBigDecimals.get(i));
+//                if (init.compareTo(BigDecimal.ZERO) == 0) {
+//                    Fund110003 fund110003 = list.get(i);
+//                    init = count.multiply(fund110003.getUnit());
+//                    System.out.println("卖出" + init + "股价：" + fund110003);
+//                    count = BigDecimal.ZERO;
+//                }
+//
+//            }
+//        }
+//        System.out.println(init.subtract(BigDecimal.valueOf(100000)).divide(BigDecimal.valueOf(100000).multiply(BigDecimal.valueOf(10)), 2, RoundingMode.UP));
+//        System.out.println(BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
+//        System.out.println(BigDecimal.valueOf(height.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
     }
 
     /**
@@ -114,6 +128,6 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
 
 
     public static void main(String[] args) {
-        new Shangzheng50Stategy().geLeiEMuIndexNum();
+        new Shangzheng50Stategy().execute();
     }
 }
