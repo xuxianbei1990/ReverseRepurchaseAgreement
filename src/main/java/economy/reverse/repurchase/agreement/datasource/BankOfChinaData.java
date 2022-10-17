@@ -109,17 +109,16 @@ public class BankOfChinaData implements IExecute {
         MediumtermLendingFacility mlf = null;
 
         for (WebElement element : listP) {
-            if (element.getText().equals("MLF")) {
+            if (element.getText().startsWith("MLF")) {
                 mlf = new MediumtermLendingFacility();
             }
             if (element.getText().endsWith("年") && (mlf != null)) {
                 mlf.setPeriod(Integer.valueOf(element.findElement(By.tagName("span")).getText()));
-            }
-            if (element.getText().endsWith("亿元") && (mlf != null)) {
+            } else if (element.getText().endsWith("亿元") && (mlf != null)) {
                 mlf.setPrice(new BigDecimal(element.findElement(By.tagName("span")).getText()));
-            }
-            if (element.getText().endsWith("%") && (mlf != null)) {
+            } else if (element.getText().endsWith("%") && (mlf != null)) {
                 mlf.setInterestRate(new BigDecimal(element.getText().replace("%", "")));
+                break;
             }
         }
         List<ReverseRepurchaseAgreement> rras = new ArrayList<>();
@@ -135,10 +134,10 @@ public class BankOfChinaData implements IExecute {
                 }
                 rra.setPeriod(Integer.valueOf(element.findElement(By.tagName("span")).getText().replace("天", "")));
             }
-            if (element.getText().endsWith("亿元")) {
+            if (element.getText().endsWith("亿元") && (rra != null)) {
                 rra.setPrice(new BigDecimal(element.findElement(By.tagName("span")).getText().replace("亿元", "")));
             }
-            if (element.getText().endsWith("%")) {
+            if (element.getText().endsWith("%") && (rra != null)) {
                 rra.setInterestRate(new BigDecimal(element.getText().replace("%", "")));
             }
         }

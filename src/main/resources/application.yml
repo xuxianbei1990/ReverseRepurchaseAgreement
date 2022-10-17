@@ -8,8 +8,10 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     testWhileIdle: true
     validationQuery: select 1
-    testOnBorrow: false
+    testOnBorrow: true
     validationInterval: 1000
+    timeBetweenEvictionRunsMillis: 3600000
+    minEvictableIdleTimeMillis: 18000000
     minIdle: 10
     maxIdle: 15
     maxActive: 8
