@@ -43,45 +43,36 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
 
     @Override
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
+        List<DateOneBigDecimal> low = new ArrayList<>();
+        List<DateOneBigDecimal> height = new ArrayList<>();
+        BigDecimal init = BigDecimal.valueOf(100000);
+        MySql mySql = new MySql();
+        List<Fund110003> list = mySql.executeSelect("161613");
+        BigDecimal count = BigDecimal.ZERO;
+        for (int i = 0; i < dateOneBigDecimals.size(); i++) {
+            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(3.6)) > 0) {
+                low.add(dateOneBigDecimals.get(i));
+                if (init.compareTo(BigDecimal.ZERO) > 0) {
+                    Fund110003 fund110003 = list.get(i);
+                    count = init.divide(fund110003.getUnit(), 0, BigDecimal.ROUND_HALF_UP);
+                    System.out.println("买入" + count + "股价：" + fund110003);
+                    init = BigDecimal.ZERO;
+                }
+            }
+            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(2)) < 0) {
+                height.add(dateOneBigDecimals.get(i));
+                if (init.compareTo(BigDecimal.ZERO) == 0) {
+                    Fund110003 fund110003 = list.get(i);
+                    init = count.multiply(fund110003.getUnit());
+                    System.out.println("卖出" + init + "股价：" + fund110003);
+                    count = BigDecimal.ZERO;
+                }
 
-        MySqlGraham mySqlGraham = new MySqlGraham();
-        mySqlGraham.executeCreateAndUpdate(dateOneBigDecimals.stream().map(dateOneBigDecimal -> {
-            GrahamIndex grahamIndex =new GrahamIndex();
-            grahamIndex.setCreateDate(dateOneBigDecimal.getDate());
-            grahamIndex.setRatio(dateOneBigDecimal.getRate());
-            return grahamIndex;
-        }).sorted(Comparator.comparing(GrahamIndex::getCreateDate)).collect(Collectors.toList()));
-
-//        List<DateOneBigDecimal> low = new ArrayList<>();
-//        List<DateOneBigDecimal> height = new ArrayList<>();
-//        BigDecimal init = BigDecimal.valueOf(100000);
-//        MySql mySql = new MySql();
-//        List<Fund110003> list = mySql.executeSelect("161613");
-//        BigDecimal count = BigDecimal.ZERO;
-//        for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-//            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(3.6)) > 0) {
-//                low.add(dateOneBigDecimals.get(i));
-//                if (init.compareTo(BigDecimal.ZERO) > 0) {
-//                    Fund110003 fund110003 = list.get(i);
-//                    count = init.divide(fund110003.getUnit(), 0, BigDecimal.ROUND_HALF_UP);
-//                    System.out.println("买入" + count + "股价：" + fund110003);
-//                    init = BigDecimal.ZERO;
-//                }
-//            }
-//            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(2)) < 0) {
-//                height.add(dateOneBigDecimals.get(i));
-//                if (init.compareTo(BigDecimal.ZERO) == 0) {
-//                    Fund110003 fund110003 = list.get(i);
-//                    init = count.multiply(fund110003.getUnit());
-//                    System.out.println("卖出" + init + "股价：" + fund110003);
-//                    count = BigDecimal.ZERO;
-//                }
-//
-//            }
-//        }
-//        System.out.println(init.subtract(BigDecimal.valueOf(100000)).divide(BigDecimal.valueOf(100000).multiply(BigDecimal.valueOf(10)), 2, RoundingMode.UP));
-//        System.out.println(BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
-//        System.out.println(BigDecimal.valueOf(height.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
+            }
+        }
+        System.out.println(init.subtract(BigDecimal.valueOf(100000)).divide(BigDecimal.valueOf(100000).multiply(BigDecimal.valueOf(10)), 2, RoundingMode.UP));
+        System.out.println(BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
+        System.out.println(BigDecimal.valueOf(height.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
     }
 
     /**
