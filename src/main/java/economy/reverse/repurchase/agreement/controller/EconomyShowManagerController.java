@@ -1,10 +1,12 @@
 package economy.reverse.repurchase.agreement.controller;
 
+import economy.reverse.repurchase.agreement.dao.GrahamIndexMapper;
 import economy.reverse.repurchase.agreement.model.Graph;
 import economy.reverse.repurchase.agreement.model.Probability;
 import economy.reverse.repurchase.agreement.service.EconomyShowManagerServcie;
 import economy.reverse.repurchase.agreement.strategy.BafeiTeStategy;
 import economy.reverse.repurchase.agreement.strategy.PriceEarningsRatioStategy;
+import economy.reverse.repurchase.agreement.strategy.Shangzheng50Stategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,9 @@ public class EconomyShowManagerController {
     @Autowired
     private BafeiTeStategy bafeiTeStategy;
 
+    @Autowired
+    private Shangzheng50Stategy shangzheng50Stategy;
+
     @GetMapping("graph")
     public Graph queryGraph() {
         return economyShowManagerServcie.queryGraph();
@@ -46,5 +51,10 @@ public class EconomyShowManagerController {
     @GetMapping("strategy/buffett")
     public String strategyBuffett(BigDecimal low, BigDecimal high) {
         return bafeiTeStategy.execute(low, high);
+    }
+
+    @GetMapping("strategy/graham")
+    public String strategyGraham(BigDecimal low, BigDecimal high) {
+        return shangzheng50Stategy.execute(low, high);
     }
 }

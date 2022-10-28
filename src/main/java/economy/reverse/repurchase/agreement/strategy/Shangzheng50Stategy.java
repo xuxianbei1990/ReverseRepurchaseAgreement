@@ -4,18 +4,24 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import economy.reverse.repurchase.agreement.dao.GrahamIndexMapper;
+import economy.reverse.repurchase.agreement.model.BuffettIndex;
 import economy.reverse.repurchase.agreement.model.Fund110003;
 import economy.reverse.repurchase.agreement.model.GrahamIndex;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.MyExcelUtil;
+import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import economy.reverse.repurchase.agreement.util.mysql.MySql;
 import economy.reverse.repurchase.agreement.util.mysql.MySqlGraham;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -34,12 +40,16 @@ import java.util.stream.Collectors;
  * Version:V1.0
  * https://api-ddc-wscn.awtmt.com/market/kline?prod_code=CN10YR.OTC&tick_count=256&period_type=2592000&adjust_price_type=forward&fields=tick_at,open_px,close_px,high_px,low_px,turnover_volume,turnover_value,average_px,px_change,px_change_rate,avg_px,ma2
  */
+@Component
 public class Shangzheng50Stategy extends AbstractExecuteTemplate {
 
     @Override
     public List<DateOneBigDecimal> parseData() {
         return MyExcelUtil.parseGeLeiEMu();
     }
+
+    @Resource
+    private GrahamIndexMapper grahamIndexMapper;
 
     @Override
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
@@ -83,7 +93,7 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
     private void probability(List<DateOneBigDecimal> dateOneBigDecimals) {
         List<DateOneBigDecimal> low = new ArrayList<>();
         for (DateOneBigDecimal dateOneBigDecimal : dateOneBigDecimals) {
-            if (dateOneBigDecimal.getRate().compareTo(BigDecimal.valueOf(3.9153)) > 0) {
+            if (dateOneBigDecimal.getRate().compareTo(BigDecimal.valueOf(4.2799)) > 0) {
                 low.add(dateOneBigDecimal);
             }
         }
@@ -116,6 +126,21 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
             chromeUtil.unInit();
         }
     }
+
+    public List<DateOneBigDecimal> LoadDataFromDB() {
+        List<GrahamIndex> list = grahamIndexMapper.selectList(Wrappers.lambdaQuery(GrahamIndex.class));
+        return list.stream().map(priceEarningsRatio -> {
+            DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
+            oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
+            oneBigDecimal.setRate(priceEarningsRatio.getRatio());
+            return oneBigDecimal;
+        }).collect(Collectors.toList());
+    }
+
+    public String execute(BigDecimal low, BigDecimal high) {
+        return doExecuteByFixYear(LoadDataFromDB(), low, high);
+    }
+
 
 
     public static void main(String[] args) {

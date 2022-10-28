@@ -35,6 +35,10 @@ public class EconomyShowManagerServcie {
     @Resource
     private ProposeMapper proposeMapper;
 
+    /**
+     * 增加功能：查3,5,10年出现的概率：汇率。市盈率
+     * @return
+     */
     public Graph queryGraph() {
         Page page = new Page<ReverseRepurchaseAgreement>();
         Page page2 = new Page<PriceEarningsRatio>();

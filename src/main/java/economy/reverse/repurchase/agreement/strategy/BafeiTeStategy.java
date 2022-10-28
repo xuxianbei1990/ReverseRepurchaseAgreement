@@ -61,43 +61,6 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
         return doExecuteByFixYear(LoadDataFromDB(), low, high);
     }
 
-    public String doExecuteByFixYear(List<DateOneBigDecimal> dateOneBigDecimals, BigDecimal lowIndex, BigDecimal highIndex) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("3年");
-        calc(getYearCollect(dateOneBigDecimals, -3), lowIndex, highIndex, stringBuilder);
-        stringBuilder.append(System.lineSeparator() + "5年");
-        calc(getYearCollect(dateOneBigDecimals, -5), lowIndex, highIndex, stringBuilder);
-        stringBuilder.append(System.lineSeparator() + "10年");
-        calc(getYearCollect(dateOneBigDecimals, -10), lowIndex, highIndex, stringBuilder);
-        stringBuilder.append(System.lineSeparator() + "20年");
-        calc(getYearCollect(dateOneBigDecimals, -20), lowIndex, highIndex, stringBuilder);
-        return stringBuilder.toString();
-    }
-
-    @NotNull
-    private List<DateOneBigDecimal> getYearCollect(List<DateOneBigDecimal> dateOneBigDecimals, Integer year) {
-        return dateOneBigDecimals.stream().filter(dateOneBigDecimal ->
-                dateOneBigDecimal.getDate().compareTo(TimeThreadSafeUtils.nowMin().plusYears(year)) > 0).collect(Collectors.toList());
-    }
-
-    private void calc(List<DateOneBigDecimal> dateOneBigDecimals, BigDecimal lowIndex, BigDecimal highIndex, StringBuilder stringBuilder) {
-        List<DateOneBigDecimal> low = new ArrayList<>();
-        List<DateOneBigDecimal> height = new ArrayList<>();
-        for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-            if (dateOneBigDecimals.get(i).getRate().compareTo(lowIndex) < 0) {
-                low.add(dateOneBigDecimals.get(i));
-            }
-            if (dateOneBigDecimals.get(i).getRate().compareTo(highIndex) > 0) {
-                height.add(dateOneBigDecimals.get(i));
-            }
-        }
-
-        stringBuilder.append(" 低于").append(lowIndex.toString()).append(" 概率:")
-                .append(BigDecimal.valueOf(low.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
-        stringBuilder.append(" 高于").append(highIndex.toString()).append(" 概率：")
-                .append(BigDecimal.valueOf(height.size()).divide(BigDecimal.valueOf(dateOneBigDecimals.size()), 4, BigDecimal.ROUND_HALF_UP));
-    }
-
     @Override
     public void doExecute(List<DateOneBigDecimal> dateOneBigDecimals, Integer times) {
         List<DateOneBigDecimal> low = new ArrayList<>();
