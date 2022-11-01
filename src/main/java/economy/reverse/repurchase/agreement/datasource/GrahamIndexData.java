@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * 格雷厄姆指数 = 股票市盈率倒数 / 十年期国债收益率
  * @author: xuxianbei
  * Date: 2022/10/14
  * Time: 11:34
@@ -36,6 +37,7 @@ public class GrahamIndexData implements IExecute {
 
     private BigDecimal geLeiEMuIndexNum() {
         RemoteWebDriver driver = chromeUtil.instance();
+        //https://wallstreetcn.com/markets/CN10YR.OTC
         driver.get("https://api-ddc-wscn.awtmt.com/market/kline?prod_code=CN10YR.OTC&tick_count=1&period_type=2592000&adjust_price_type=forward&fields=tick_at,open_px,close_px,high_px,low_px,turnover_volume,turnover_value,average_px,px_change,px_change_rate,avg_px,ma2");
         String value = driver.findElement(By.tagName("pre")).getText();
         JSONObject jsonObject = JSONUtil.parseObj(value);
@@ -52,7 +54,11 @@ public class GrahamIndexData implements IExecute {
                 break;
             }
         }
-        return BigDecimal.valueOf(1).divide(sz50, 4, BigDecimal.ROUND_HALF_UP).divide(year10, 4, BigDecimal.ROUND_HALF_UP);
+        try {
+            return BigDecimal.valueOf(1).divide(sz50, 4, BigDecimal.ROUND_HALF_UP).divide(year10, 4, BigDecimal.ROUND_HALF_UP);
+        } finally {
+            chromeUtil.unInit();
+        }
     }
 
     @Override

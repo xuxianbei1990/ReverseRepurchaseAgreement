@@ -19,4 +19,6 @@ public class Graph {
     private List<Usdcny> usdcnies;
     private List<MediumtermLendingFacility> mediumtermLendingFacilities;
     private List<Propose> proposes;
+
+    private GrahamIndex grahamIndex;
 }
