@@ -1,31 +1,24 @@
 package economy.reverse.repurchase.agreement.strategy;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.GrahamIndexMapper;
-import economy.reverse.repurchase.agreement.model.BuffettIndex;
 import economy.reverse.repurchase.agreement.model.Fund110003;
 import economy.reverse.repurchase.agreement.model.GrahamIndex;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.MyExcelUtil;
-import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import economy.reverse.repurchase.agreement.util.mysql.MySql;
-import economy.reverse.repurchase.agreement.util.mysql.MySqlGraham;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import economy.reverse.repurchase.agreement.dao.*;
 import economy.reverse.repurchase.agreement.model.*;
+import economy.reverse.repurchase.agreement.util.MyPageUtil;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +46,9 @@ public class EconomyShowManagerServcie {
      * @return
      */
     public Graph queryGraph() {
-        Page pageRra = new Page<ReverseRepurchaseAgreement>();
-        Page pagePer = new Page<PriceEarningsRatio>();
-        Page pageUsd = new Page<Usdcny>();
-        pageUsd.setSize(20);
+        Page<ReverseRepurchaseAgreement> pageRra = new Page<>();
+        Page<PriceEarningsRatio> pagePer = MyPageUtil.newPage();
+        Page<Usdcny> pageUsd = MyPageUtil.newPage();
         Graph graph = new Graph();
         IPage<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectPage(pagePer, Wrappers.lambdaQuery(PriceEarningsRatio.class).orderByDesc(PriceEarningsRatio::getId));
         IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements =
