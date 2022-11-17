@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,5 +46,10 @@ public class Propose implements Serializable {
      */
     private LocalDateTime createDate;
 
+    /**
+     * 版本，这个需要入口强制校验这个字段必须有值，
+     */
+    @Version
+    private Integer version;
 
 }

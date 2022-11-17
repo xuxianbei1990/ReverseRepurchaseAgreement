@@ -54,7 +54,7 @@ public class EconomyShowManagerServcie {
         IPage<ReverseRepurchaseAgreement> reverseRepurchaseAgreements =
                 reverseRepurchaseAgreementMapper.selectPage(pageRra, Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class).orderByDesc(ReverseRepurchaseAgreement::getId));
         IPage<Usdcny> usdcnies = usdcnyMapper.selectPage(pageUsd, Wrappers.lambdaQuery(Usdcny.class).orderByDesc(Usdcny::getId));
-        List<MediumtermLendingFacility> mediumtermLendingFacilities = mediumtermLendingFacilityMapper.selectList(Wrappers.lambdaQuery(MediumtermLendingFacility.class));
+        List<MediumtermLendingFacility> mediumtermLendingFacilities = mediumtermLendingFacilityMapper.selectList(Wrappers.lambdaQuery(MediumtermLendingFacility.class).orderByDesc(MediumtermLendingFacility::getId));
         List<Propose> proposes = proposeMapper.selectList(Wrappers.lambdaQuery(Propose.class));
         GrahamIndex grahamIndex = grahamIndexMapper.selectOne(Wrappers.lambdaQuery(GrahamIndex.class)
                 .between(GrahamIndex::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));

@@ -1,10 +1,9 @@
 package economy.reverse.repurchase.agreement.controller;
 
+import economy.reverse.repurchase.agreement.model.Propose;
 import economy.reverse.repurchase.agreement.service.ReverseRepurchaseAgreementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: xuxianbei
@@ -54,4 +53,16 @@ public class ReverseRepurchaseAgreementController {
         reverseRepurchaseAgreementService.sample();
         return "success";
     }
+
+    @GetMapping("get/propose")
+    public Propose getPropose(Integer id) {
+        return reverseRepurchaseAgreementService.getPropose(id);
+    }
+
+    @PostMapping("upate/propose")
+    public Integer upatePropose(@RequestBody Propose propose) {
+        return reverseRepurchaseAgreementService.upatePropose(propose);
+    }
+
+
 }

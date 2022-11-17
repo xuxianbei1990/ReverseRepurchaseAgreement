@@ -1,12 +1,14 @@
 package economy.reverse.repurchase.agreement.service;
 
 import economy.reverse.repurchase.agreement.dao.PriceEarningsRatioMapper;
+import economy.reverse.repurchase.agreement.dao.ProposeMapper;
 import economy.reverse.repurchase.agreement.dao.Sh600036Mapper;
 import economy.reverse.repurchase.agreement.datasource.BankOfChinaData;
 import economy.reverse.repurchase.agreement.datasource.IExecute;
 import economy.reverse.repurchase.agreement.datasource.PriceEarningsRatioData;
 import economy.reverse.repurchase.agreement.datasource.RmbToDollar;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
+import economy.reverse.repurchase.agreement.model.Propose;
 import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.model.Sh600036;
 import economy.reverse.repurchase.agreement.strategy.BankShareOutBonus;
@@ -43,6 +45,9 @@ public class ReverseRepurchaseAgreementService {
     @Autowired
     private RmbToDollar rmbToDollar;
 
+    @Resource
+    private ProposeMapper proposeMapper;
+
     @Autowired
     private ChromeUtil chromeUtil;
 
@@ -76,7 +81,13 @@ public class ReverseRepurchaseAgreementService {
     @Transactional(rollbackFor = Exception.class)
     public void parseSave() {
         MyExcelUtil.parse("沪深300市盈率.xlsx", (priceEarningsRatio) -> priceEarningsRatioMapper.insert(priceEarningsRatio));
-//        List<Sh600036> sh600036s = bankShareOutBonus.parseData();
-//        sh600036s.forEach(sh600036 -> sh600036Mapper.insert(sh600036));
+    }
+
+    public Propose getPropose(Integer id) {
+        return proposeMapper.selectById(id);
+    }
+
+    public Integer upatePropose(Propose propose) {
+        return proposeMapper.updateById(propose);
     }
 }
