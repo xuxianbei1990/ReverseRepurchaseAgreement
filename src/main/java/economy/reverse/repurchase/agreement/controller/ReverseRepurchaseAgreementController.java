@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * Time: 9:50
  * Version:V1.0
  */
+@CrossOrigin
 @RestController
 @RequestMapping("data/collect")
 public class ReverseRepurchaseAgreementController {
@@ -54,11 +55,21 @@ public class ReverseRepurchaseAgreementController {
         return "success";
     }
 
+    /**
+     * 获取建议：
+     * @param id
+     * @return
+     */
     @GetMapping("get/propose")
     public Propose getPropose(Integer id) {
         return reverseRepurchaseAgreementService.getPropose(id);
     }
 
+    /**
+     * 更新建议：
+     * @param propose
+     * @return
+     */
     @PostMapping("upate/propose")
     public Integer upatePropose(@RequestBody Propose propose) {
         return reverseRepurchaseAgreementService.upatePropose(propose);

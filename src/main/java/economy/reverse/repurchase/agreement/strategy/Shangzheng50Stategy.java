@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  * Date: 2022/9/27
  * Time: 11:37
  * Version:V1.0
+ * https://wallstreetcn.com/markets/CN10YR.OTC
  * https://api-ddc-wscn.awtmt.com/market/kline?prod_code=CN10YR.OTC&tick_count=256&period_type=2592000&adjust_price_type=forward&fields=tick_at,open_px,close_px,high_px,low_px,turnover_volume,turnover_value,average_px,px_change,px_change_rate,avg_px,ma2
  */
 @Component
