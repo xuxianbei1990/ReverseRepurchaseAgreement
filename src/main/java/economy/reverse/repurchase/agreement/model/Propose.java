@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("propose")
-public class Propose implements Serializable {
+public class Propose extends OptimisticLockerBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,11 +45,5 @@ public class Propose implements Serializable {
      * 创建时间
      */
     private LocalDateTime createDate;
-
-    /**
-     * 版本，这个需要入口强制校验这个字段必须有值，
-     */
-    @Version
-    private Integer version;
 
 }

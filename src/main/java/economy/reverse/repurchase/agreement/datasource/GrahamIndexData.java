@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * 格雷厄姆指数 = 股票市盈率倒数 / 十年期国债收益率
+ *
  * @author: xuxianbei
  * Date: 2022/10/14
  * Time: 11:34
@@ -54,11 +55,7 @@ public class GrahamIndexData implements IExecute {
                 break;
             }
         }
-        try {
-            return BigDecimal.valueOf(1).divide(sz50, 4, BigDecimal.ROUND_HALF_UP).divide(year10, 4, BigDecimal.ROUND_HALF_UP);
-        } finally {
-            chromeUtil.unInit();
-        }
+        return BigDecimal.valueOf(1).divide(sz50, 4, BigDecimal.ROUND_HALF_UP).divide(year10, 4, BigDecimal.ROUND_HALF_UP);
     }
 
     @Override
