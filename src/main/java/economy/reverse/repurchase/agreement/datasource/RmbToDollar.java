@@ -8,6 +8,7 @@ import economy.reverse.repurchase.agreement.model.ReverseRepurchaseAgreement;
 import economy.reverse.repurchase.agreement.model.Usdcny;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * Time: 14:16
  * Version:V1.0
  */
+@Slf4j
 @Component
 public class RmbToDollar implements IExecute {
 
@@ -40,16 +42,20 @@ public class RmbToDollar implements IExecute {
         RemoteWebDriver driver = chromeUtil.instance();
         driver.get(" https://finance.sina.com.cn/money/forex/hq/USDCNY.shtml");
         List<WebElement> list = driver.findElements(By.tagName("li"));
-
-        List<String> value = list.stream().map(WebElement::getText).collect(Collectors.toList());
-        Usdcny usdcny = new Usdcny();
-        for (String s : value) {
-            if (s.startsWith("昨收\n")) {
-                usdcny.setExchangeRate(new BigDecimal(s.replace("昨收\n", "")));
-                break;
+        for (WebElement webElement : list) {
+            try {
+                String s = webElement.getText();
+                if (s.startsWith("昨收\n")) {
+                    Usdcny usdcny = new Usdcny();
+                    usdcny.setExchangeRate(new BigDecimal(s.replace("昨收\n", "")));
+                    return usdcny;
+                }
+            } catch (Exception e){
+                log.error("错误", e);
             }
+
         }
-        return usdcny;
+        throw new RuntimeException("获取数据失败");
     }
 
     @Override
