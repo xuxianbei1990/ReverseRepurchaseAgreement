@@ -1,5 +1,6 @@
 package economy.reverse.repurchase.agreement.datasource;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.BuffettIndexMapper;
 import economy.reverse.repurchase.agreement.model.BuffettIndex;
@@ -39,7 +40,13 @@ public class BuffettIndexData implements IExecute {
         RemoteWebDriver driver = chromeUtil.instance();
         driver.get("https://legulegu.com/stockdata/marketcap-gdp");
         List<WebElement> list = driver.findElements(By.className("pe"));
-        String value = list.get(2).getText().replace("总市值/GDP: ", "").replace("%", "");
+        String value;
+        if (CollectionUtil.isEmpty(list)) {
+            value = driver.findElements(By.className("data-view-head-market-cap-gdp-ratio")).get(0).getText()
+                    .replace("总市值/GDP: ", "").replace("%", "");
+        } else {
+            value = list.get(2).getText().replace("总市值/GDP: ", "").replace("%", "");
+        }
         BigDecimal radio = (new BigDecimal(value)).divide(BigDecimal.valueOf(100));
         BuffettIndex grahamIndex = buffettIndexMapper.selectOne(Wrappers.lambdaQuery(BuffettIndex.class)
                 .between(BuffettIndex::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
