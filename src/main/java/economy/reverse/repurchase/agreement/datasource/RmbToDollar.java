@@ -31,6 +31,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class RmbToDollar implements IExecute {
+    @Override
+    public boolean judge() {
+        return TimeThreadSafeUtils.workDay();
+    }
 
     @Autowired
     private ChromeUtil chromeUtil;
@@ -50,7 +54,7 @@ public class RmbToDollar implements IExecute {
                     usdcny.setExchangeRate(new BigDecimal(s.replace("昨收\n", "")));
                     return usdcny;
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("错误", e);
             }
 

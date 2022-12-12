@@ -9,4 +9,8 @@ package economy.reverse.repurchase.agreement.datasource;
 public interface IExecute {
 
     void execute();
+
+    default boolean judge() {
+        return true;
+    }
 }

@@ -24,6 +24,14 @@ public class TimeThreadSafeUtils {
 
     public static final String YYYY_MM = "yyyy-MM";
 
+    /**
+     * 工作日
+     * @return
+     */
+    public static boolean workDay() {
+        return TimeThreadSafeUtils.now().getDayOfWeek().getValue() != 1 && TimeThreadSafeUtils.now().getDayOfWeek().getValue() != 7;
+    }
+
     @SuppressWarnings("AlibabaLowerCamelCaseVariableNaming")
     public static String dateFormatYYYY_MM_DD_HH_MM_SS(LocalDateTime dateTime) {
         return dateTimeFormat(dateTime, YYYY_MM_DD_HH_MM_SS);

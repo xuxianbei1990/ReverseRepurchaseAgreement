@@ -69,11 +69,10 @@ public class ReverseRepurchaseAgreementService {
     }
 
     public void economyTarget() {
-        if (TimeThreadSafeUtils.now().getDayOfWeek().getValue() == 1 && TimeThreadSafeUtils.now().getDayOfWeek().getValue() == 7) {
-            return;
-        }
         for (IExecute execute : executes) {
-            execute.execute();
+            if (execute.judge()) {
+                execute.execute();
+            }
         }
     }
 
