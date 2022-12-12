@@ -29,6 +29,12 @@ import java.util.Optional;
 @Component
 public class BankOfChinaData implements IExecute {
 
+
+    @Override
+    public boolean judge() {
+        return TimeThreadSafeUtils.now().getDayOfWeek().getValue() != 6 && TimeThreadSafeUtils.now().getDayOfWeek().getValue() != 7;
+    }
+
     @Resource
     private ReverseRepurchaseAgreementMapper reverseRepurchaseAgreementMapper;
 
