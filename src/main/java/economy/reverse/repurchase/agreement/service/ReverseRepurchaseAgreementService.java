@@ -18,6 +18,7 @@ import economy.reverse.repurchase.agreement.model.Sh600036;
 import economy.reverse.repurchase.agreement.strategy.BankShareOutBonus;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.MyExcelUtil;
+import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,9 @@ public class ReverseRepurchaseAgreementService {
     }
 
     public void economyTarget() {
+        if (TimeThreadSafeUtils.now().getDayOfWeek().getValue() == 1 && TimeThreadSafeUtils.now().getDayOfWeek().getValue() == 7) {
+            return;
+        }
         for (IExecute execute : executes) {
             execute.execute();
         }
@@ -91,6 +95,7 @@ public class ReverseRepurchaseAgreementService {
     /**
      * blockHandler:那么我猜SentinelResource实现方式是先获取注解的主类，绕后通过扫描主类的下所有方法，通过名字判断，然后注入方法，那么这个是否有
      * 优先顺序？默认参数又是啥呢？blockHandlerClass: 这个默认就是主类，也可以指定类
+     *
      * @param id
      * @return
      */
@@ -99,7 +104,7 @@ public class ReverseRepurchaseAgreementService {
         return proposeMapper.selectById(id);
     }
 
-    public static void testBlockHandler(){
+    public static void testBlockHandler() {
         System.out.println("1");
     }
 
