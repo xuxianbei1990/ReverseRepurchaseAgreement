@@ -21,7 +21,7 @@ import java.math.BigDecimal;
  * Time: 13:36
  * Version:V1.0
  */
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("data/show")
 public class EconomyShowManagerController {
