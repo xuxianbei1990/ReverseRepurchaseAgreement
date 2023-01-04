@@ -46,6 +46,7 @@ public class BankOfChinaData implements IExecute {
 
     @Override
     public void execute() {
+        Integer[] period = new Integer[]{7, 14};
         Context context = getReverseRepurchaseAgreement();
         executeMlf(context);
         List<ReverseRepurchaseAgreement> list = reverseRepurchaseAgreementMapper.selectList(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
@@ -54,9 +55,21 @@ public class BankOfChinaData implements IExecute {
             for (ReverseRepurchaseAgreement rra : context.rras) {
                 ReverseRepurchaseAgreement old = reverseRepurchaseAgreementMapper.selectOne(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
                         .between(ReverseRepurchaseAgreement::getCreateDate,
-                                TimeThreadSafeUtils.nowMin().plusDays(-rra.getPeriod()),
-                                TimeThreadSafeUtils.nowMax().plusDays(-rra.getPeriod()))
-                        .eq(ReverseRepurchaseAgreement::getPeriod, rra.getPeriod()));
+                                TimeThreadSafeUtils.nowMin().plusDays(-period[0]),
+                                TimeThreadSafeUtils.nowMax().plusDays(-period[0]))
+                        .eq(ReverseRepurchaseAgreement::getPeriod, period[0]));
+                ReverseRepurchaseAgreement old2 = reverseRepurchaseAgreementMapper.selectOne(Wrappers.lambdaQuery(ReverseRepurchaseAgreement.class)
+                        .between(ReverseRepurchaseAgreement::getCreateDate,
+                                TimeThreadSafeUtils.nowMin().plusDays(-period[1]),
+                                TimeThreadSafeUtils.nowMax().plusDays(-period[1]))
+                        .eq(ReverseRepurchaseAgreement::getPeriod, period[1]));
+                if (old2 != null) {
+                    if (old == null) {
+                        old = new ReverseRepurchaseAgreement();
+                        old.setPrice(BigDecimal.ZERO);
+                    }
+                    old.setPrice(old.getPrice().add(old2.getPrice()));
+                }
                 if (old != null) {
                     BigDecimal sub = rra.getPrice().subtract(old.getPrice());
                     if (sub.compareTo(BigDecimal.ZERO) < 0) {
@@ -156,8 +169,9 @@ public class BankOfChinaData implements IExecute {
     }
 
     private static boolean judge(String text) {
-        if (text.length() > "公开市场业务交易公告 [2022]第".length()) {
-            if (text.startsWith("公开市场业务交易公告 [2022]第")) {
+
+        if (text.length() > ("公开市场业务交易公告 [" +TimeThreadSafeUtils.now().getYear()+ "]第").length()) {
+            if (text.startsWith(("公开市场业务交易公告 [" +TimeThreadSafeUtils.now().getYear()+ "]第"))) {
                 return true;
             }
         }
