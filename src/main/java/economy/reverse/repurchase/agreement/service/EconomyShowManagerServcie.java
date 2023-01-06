@@ -40,6 +40,9 @@ public class EconomyShowManagerServcie {
     @Resource
     private GrahamIndexMapper grahamIndexMapper;
 
+    @Resource
+    private BuffettIndexMapper buffettIndexMapper;
+
     /**
      * 增加功能：查3,5,10年出现的概率：汇率。市盈率
      *
@@ -58,6 +61,8 @@ public class EconomyShowManagerServcie {
         List<Propose> proposes = proposeMapper.selectList(Wrappers.lambdaQuery(Propose.class));
         GrahamIndex grahamIndex = grahamIndexMapper.selectOne(Wrappers.lambdaQuery(GrahamIndex.class)
                 .between(GrahamIndex::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
+        BuffettIndex buffettIndex = buffettIndexMapper.selectOne(Wrappers.lambdaQuery(BuffettIndex.class)
+                .between(BuffettIndex::getCreateDate, TimeThreadSafeUtils.nowMin(), TimeThreadSafeUtils.nowMax()));
         priceEarningsRatios.getRecords().sort(Comparator.comparing(PriceEarningsRatio::getId));
         graph.setMediumtermLendingFacilities(mediumtermLendingFacilities);
         graph.setPriceEarningsRatios(priceEarningsRatios.getRecords());
@@ -66,6 +71,7 @@ public class EconomyShowManagerServcie {
         graph.setUsdcnies(usdcnies.getRecords());
         graph.setProposes(proposes);
         graph.setGrahamIndex(grahamIndex);
+        graph.setBuffettIndex(buffettIndex);
         return graph;
     }
 }

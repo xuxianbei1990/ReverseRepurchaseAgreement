@@ -21,4 +21,6 @@ public class Graph {
     private List<Propose> proposes;
 
     private GrahamIndex grahamIndex;
+
+    private BuffettIndex buffettIndex;
 }
