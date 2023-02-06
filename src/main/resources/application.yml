@@ -18,9 +18,20 @@ spring:
       max-active: 10
       testOnConnect: true
       initSQL: select 1
+  thymeleaf:
+#    模板变更，立即生效
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    prefix: classpath:/templates/
 server:
   port: 1002
 mybatis:
   #  mapper-locations: classpath:college/springcloud/order/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+#canal:
+#  server: 124.70.187.145:11111
+##  对应canal服务配置的example文件下的实例
+#  destination: example
+
