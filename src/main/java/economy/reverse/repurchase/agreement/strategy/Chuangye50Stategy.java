@@ -23,7 +23,7 @@ public class Chuangye50Stategy extends AbstractExecuteTemplate {
         return priceEarningsRatios.stream().map(priceEarningsRatio -> {
             DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
             oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
-            oneBigDecimal.setRate(priceEarningsRatio.getRatio());
+            oneBigDecimal.setValue(priceEarningsRatio.getRatio());
             return oneBigDecimal;
         }).collect(Collectors.toList());
     }
@@ -33,7 +33,7 @@ public class Chuangye50Stategy extends AbstractExecuteTemplate {
         List<DateOneBigDecimal> low = new ArrayList<>();
         List<DateOneBigDecimal> height = new ArrayList<>();
         for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(37)) < 0) {
+            if (dateOneBigDecimals.get(i).getValue().compareTo(BigDecimal.valueOf(37)) < 0) {
                 low.add(dateOneBigDecimals.get(i));
 //                if (init.compareTo(BigDecimal.ZERO) > 0) {
 //                    Fund110003 fund110003 = list.get(i);
@@ -42,7 +42,7 @@ public class Chuangye50Stategy extends AbstractExecuteTemplate {
 //                    init = BigDecimal.ZERO;
 //                }
             }
-            if (dateOneBigDecimals.get(i).getRate().compareTo(BigDecimal.valueOf(100)) > 0) {
+            if (dateOneBigDecimals.get(i).getValue().compareTo(BigDecimal.valueOf(100)) > 0) {
                 height.add(dateOneBigDecimals.get(i));
 //                if (init.compareTo(BigDecimal.ZERO) == 0){
 //                    Fund110003 fund110003 = list.get(i);

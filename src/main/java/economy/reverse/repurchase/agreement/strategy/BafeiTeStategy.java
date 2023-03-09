@@ -1,25 +1,18 @@
 package economy.reverse.repurchase.agreement.strategy;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
-import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.BuffettIndexMapper;
 import economy.reverse.repurchase.agreement.model.BuffettIndex;
 import economy.reverse.repurchase.agreement.model.GrahamIndex;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
-import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import economy.reverse.repurchase.agreement.util.TxtUtils;
 import economy.reverse.repurchase.agreement.util.mysql.MySqlBuffettIndex;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +37,7 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
         return list.stream().filter(t -> t.getCreateDate().compareTo(LocalDateTime.of(2017, 1, 1, 0, 0, 0)) > 0).map(priceEarningsRatio -> {
             DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
             oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
-            oneBigDecimal.setRate(priceEarningsRatio.getRatio());
+            oneBigDecimal.setValue(priceEarningsRatio.getRatio());
             return oneBigDecimal;
         }).collect(Collectors.toList());
     }
@@ -54,7 +47,7 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
         return list.stream().map(priceEarningsRatio -> {
             DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
             oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
-            oneBigDecimal.setRate(priceEarningsRatio.getRatio());
+            oneBigDecimal.setValue(priceEarningsRatio.getRatio());
             return oneBigDecimal;
         }).collect(Collectors.toList());
     }
@@ -68,7 +61,7 @@ public class BafeiTeStategy extends AbstractExecuteTemplate {
         MySqlBuffettIndex mySqlBuffettIndex = new MySqlBuffettIndex();
         mySqlBuffettIndex.executeCreateAndUpdate(dateOneBigDecimals.stream().map(dateOneBigDecimal -> {
             GrahamIndex grahamIndex = new GrahamIndex();
-            grahamIndex.setRatio(dateOneBigDecimal.getRate());
+            grahamIndex.setRatio(dateOneBigDecimal.getValue());
             grahamIndex.setCreateDate(dateOneBigDecimal.getDate());
             return grahamIndex;
         }).collect(Collectors.toList()));

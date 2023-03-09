@@ -4,12 +4,10 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import economy.reverse.repurchase.agreement.dao.GrahamIndexMapper;
-import economy.reverse.repurchase.agreement.model.Fund110003;
 import economy.reverse.repurchase.agreement.model.GrahamIndex;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import economy.reverse.repurchase.agreement.util.ChromeUtil;
 import economy.reverse.repurchase.agreement.util.MyExcelUtil;
-import economy.reverse.repurchase.agreement.util.mysql.MySql;
 import economy.reverse.repurchase.agreement.util.mysql.MySqlGraham;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +48,7 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
         MySqlGraham mySqlGraham = new MySqlGraham();
         mySqlGraham.executeCreateAndUpdate(dateOneBigDecimals.stream().map(dateOneBigDecimal -> {
             GrahamIndex grahamIndex = new GrahamIndex();
-            grahamIndex.setRatio(dateOneBigDecimal.getRate());
+            grahamIndex.setRatio(dateOneBigDecimal.getValue());
             grahamIndex.setCreateDate(dateOneBigDecimal.getDate());
             return grahamIndex;
         }).collect(Collectors.toList()));
@@ -96,7 +93,7 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
     private void probability(List<DateOneBigDecimal> dateOneBigDecimals) {
         List<DateOneBigDecimal> low = new ArrayList<>();
         for (DateOneBigDecimal dateOneBigDecimal : dateOneBigDecimals) {
-            if (dateOneBigDecimal.getRate().compareTo(BigDecimal.valueOf(4.2799)) > 0) {
+            if (dateOneBigDecimal.getValue().compareTo(BigDecimal.valueOf(4.2799)) > 0) {
                 low.add(dateOneBigDecimal);
             }
         }
@@ -135,7 +132,7 @@ public class Shangzheng50Stategy extends AbstractExecuteTemplate {
         return list.stream().map(priceEarningsRatio -> {
             DateOneBigDecimal oneBigDecimal = new DateOneBigDecimal();
             oneBigDecimal.setDate(priceEarningsRatio.getCreateDate());
-            oneBigDecimal.setRate(priceEarningsRatio.getRatio());
+            oneBigDecimal.setValue(priceEarningsRatio.getRatio());
             return oneBigDecimal;
         }).collect(Collectors.toList());
     }

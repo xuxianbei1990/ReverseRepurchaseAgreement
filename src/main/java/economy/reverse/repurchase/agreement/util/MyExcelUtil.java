@@ -3,7 +3,6 @@ package economy.reverse.repurchase.agreement.util;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.poi.excel.ExcelUtil;
-import cn.hutool.poi.excel.sax.handler.RowHandler;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 
@@ -40,7 +39,7 @@ public class MyExcelUtil {
                     if (rowIndex > 1) {
                         DateOneBigDecimal ratio = new DateOneBigDecimal();
                         ratio.setDate(LocalDateTimeUtil.of(DateUtil.parse(rowCells.get(0).toString())));
-                        ratio.setRate(new BigDecimal(rowCells.get(1).toString()));
+                        ratio.setValue(new BigDecimal(rowCells.get(1).toString()));
                         list.add(ratio);
                     }
                 });

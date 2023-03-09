@@ -16,6 +16,6 @@ public class DateOneBigDecimal {
 
     private LocalDateTime date;
 
-    private BigDecimal rate;
+    private BigDecimal value;
 
 }

@@ -98,7 +98,7 @@ public class ChromeUtil implements InitializingBean {
         //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
         list1.add("--headless");
 
-        String driverPath = "C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\108.0.5359.71\\chromedriver.exe";
+        String driverPath = "C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\110.0.5481.77\\chromedriver.exe";
         if (SystemUtil.getOsInfo().isLinux()) {
             driverPath = "chromedriver";
         }

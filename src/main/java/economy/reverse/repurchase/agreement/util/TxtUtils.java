@@ -8,6 +8,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import economy.reverse.repurchase.agreement.model.PriceEarningsRatio;
 import economy.reverse.repurchase.agreement.model.Sh600036;
+import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import netscape.javascript.JSObject;
 import org.apache.ibatis.io.Resources;
 import org.springframework.core.io.ClassPathResource;
@@ -77,5 +78,21 @@ public class TxtUtils {
             sh600036.setClosing(new BigDecimal(values[4]));
             return sh600036;
         }).filter(t -> t != null).collect(Collectors.toList());
+
     }
+
+    public static List<DateOneBigDecimal> parseText(File fie, Class<DateOneBigDecimal> zlass) {
+        List<String> list = FileUtil.readLines(fie, Charset.forName("gb2312"));
+        return list.stream().skip(2).map(value -> {
+            if (value.equals("数据来源:通达信")) {
+                return null;
+            }
+            String[] values = value.split("\t");
+            DateOneBigDecimal sh600036 = new DateOneBigDecimal();
+            sh600036.setDate(LocalDateTimeUtil.of(DateUtil.parse(values[0])));
+            sh600036.setValue(new BigDecimal(values[4]));
+            return sh600036;
+        }).filter(t -> t != null).collect(Collectors.toList());
+    }
+
 }

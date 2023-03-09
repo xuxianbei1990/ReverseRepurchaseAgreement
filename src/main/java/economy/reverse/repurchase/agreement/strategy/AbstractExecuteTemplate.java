@@ -1,6 +1,5 @@
 package economy.reverse.repurchase.agreement.strategy;
 
-import economy.reverse.repurchase.agreement.model.Sh600036;
 import economy.reverse.repurchase.agreement.strategy.model.DateOneBigDecimal;
 import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 
@@ -44,10 +43,10 @@ public abstract class AbstractExecuteTemplate implements Execute{
         List<DateOneBigDecimal> low = new ArrayList<>();
         List<DateOneBigDecimal> height = new ArrayList<>();
         for (int i = 0; i < dateOneBigDecimals.size(); i++) {
-            if (dateOneBigDecimals.get(i).getRate().compareTo(lowIndex) < 0) {
+            if (dateOneBigDecimals.get(i).getValue().compareTo(lowIndex) < 0) {
                 low.add(dateOneBigDecimals.get(i));
             }
-            if (dateOneBigDecimals.get(i).getRate().compareTo(highIndex) > 0) {
+            if (dateOneBigDecimals.get(i).getValue().compareTo(highIndex) > 0) {
                 height.add(dateOneBigDecimals.get(i));
             }
         }
