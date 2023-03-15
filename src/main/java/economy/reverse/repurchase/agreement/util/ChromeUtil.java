@@ -74,14 +74,6 @@ public class ChromeUtil implements InitializingBean {
 
     public void init() {
         ChromeOptions chromeOptions = new ChromeOptions();
-//        if (SystemUtil.getOsInfo().isLinux()) {
-//            try {
-//                //因为每个docker都有自己ip，无法直接使用localhost
-//                driver = new RemoteWebDriver(new URL("http://43.143.47.137:3344/wd/hub"), chromeOptions);
-//            } catch (MalformedURLException e) {
-//                log.error("驱动失败", e);
-//            }
-//        } else {
         WebDriverManager.chromedriver().setup();
         chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
         List<String> list1 = new ArrayList<>();
@@ -98,13 +90,15 @@ public class ChromeUtil implements InitializingBean {
         //# 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
         list1.add("--headless");
 
-        String driverPath = "C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\110.0.5481.77\\chromedriver.exe";
+        String driverPath = "C:\\Users\\2250\\.cache\\selenium\\chromedriver\\win32\\104.0.5112.79\\chromedriver.exe";
         if (SystemUtil.getOsInfo().isLinux()) {
             driverPath = "chromedriver";
         }
-
         ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File(driverPath)).usingAnyFreePort().build();
+                .usingAnyFreePort().build();
+
+//        ChromeDriverService chromeDriverService = new ChromeDriverService.Builder()
+//                .usingDriverExecutable(new File(driverPath)).usingAnyFreePort().build();
         driver = new ChromeDriver(chromeDriverService, chromeOptions);
         driver.executeScript("window.open('about:blank', 'tab1');");
         driver.switchTo().window("tab1");
@@ -120,5 +114,10 @@ public class ChromeUtil implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
+    }
+
+    public static void main(String[] args) {
+        ChromeUtil chromeUtil = new ChromeUtil();
+        chromeUtil.init();
     }
 }

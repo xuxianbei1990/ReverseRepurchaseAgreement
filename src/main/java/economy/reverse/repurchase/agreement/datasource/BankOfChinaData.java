@@ -104,6 +104,8 @@ public class BankOfChinaData implements IExecute {
                     context.mlf.setAddPrice(sub);
                 }
             }
+            context.mlf.setPriceUnit("亿");
+            context.mlf.setPeriodUnit("年");
             mediumtermLendingFacilityMapper.insert(context.mlf);
         }
     }
