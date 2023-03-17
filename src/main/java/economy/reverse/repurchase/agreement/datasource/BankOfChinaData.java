@@ -119,6 +119,11 @@ public class BankOfChinaData implements IExecute {
         RemoteWebDriver driver = chromeUtil.instance();
         driver.get("http://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/index.html");
         driver.navigate().refresh();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         driver.get("http://www.pbc.gov.cn/zhengcehuobisi/125207/125213/125431/index.html");
 //        driver.manage().window().maximize();
         List<WebElement> list = driver.findElements(By.tagName("a"));

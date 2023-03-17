@@ -47,7 +47,7 @@ public class RmbToDollar implements IExecute {
         driver.get(" https://finance.sina.com.cn/money/forex/hq/USDCNY.shtml");
         List<WebElement> list = driver.findElements(By.tagName("li"));
         for (WebElement webElement : list) {
-            try {
+                try {
                 String s = webElement.getText();
                 if (s.startsWith("昨收\n")) {
                     Usdcny usdcny = new Usdcny();
