@@ -10,6 +10,7 @@ import economy.reverse.repurchase.agreement.util.TimeThreadSafeUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class EconomyShowManagerServcie {
     public Graph queryGraph() {
         Page<ReverseRepurchaseAgreement> pageRra = new Page<>();
         Page<PriceEarningsRatio> pagePer = MyPageUtil.newPage();
+        pagePer.setSize(Long.MAX_VALUE);
         Page<Usdcny> pageUsd = MyPageUtil.newPage();
         Graph graph = new Graph();
         IPage<PriceEarningsRatio> priceEarningsRatios = priceEarningsRatioMapper.selectPage(pagePer, Wrappers.lambdaQuery(PriceEarningsRatio.class).orderByDesc(PriceEarningsRatio::getId));

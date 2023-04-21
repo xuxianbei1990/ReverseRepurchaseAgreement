@@ -97,7 +97,7 @@ public class BankShareOutBonus {
                 }
             }
 
-            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 4, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.03)) <= 0) {
+            if (share.divide(sh.getOpen().multiply(BigDecimal.valueOf(10)), 4, RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.057)) <= 0) {
                 height.add(sh);
                 if (stacks.isEmpty()) {
                     BigDecimal sellCount = sells.stream().reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
